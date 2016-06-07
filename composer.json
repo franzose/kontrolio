@@ -1,0 +1,22 @@
+{
+  "name": "Kontrolio",
+  "authors": [
+    {
+      "name": "Jan Iwanow",
+      "email": "iwanow.jan@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "~4.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kontrolio\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kontrolio\\Tests\\": "tests/"
+    }
+  }
+}
