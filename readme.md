@@ -1,3 +1,5 @@
+[На русском](https://github.com/franzose/kontrolio/blob/master/readme_rus.md)
+
 # Kontrolio: keep your data under control.
 Kontrolio is a simple standalone data validation library inspired by Laravel and Symfony.
 
