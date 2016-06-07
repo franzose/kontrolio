@@ -1,5 +1,9 @@
 {
   "name": "Kontrolio",
+  "type": "library",
+  "description": "Simple and standalone data validation library inspired by Laravel and Symfony",
+  "keywords": ["validation", "laravel", "symfony"],
+  "license": "MIT",
   "authors": [
     {
       "name": "Jan Iwanow",
