@@ -21,9 +21,9 @@ $data = [
 ];
 ```
 
-Validation rules can be set in three different formats:
-1. Laravel-like string
-2. Instances of the class based rules
+Validation rules can be set in three different formats:<br>
+1. Laravel-like string<br>
+2. Instances of the class based rules<br>
 3. Callables (closures or callbacks)
 
 You can also mix instances and callables when you set multiple validation rules to a single attribute. Here's a simple example:
@@ -150,9 +150,9 @@ $messages = [
     // '[attribute].[rule].[violation]
 ];
 ```
-Every message key can have three segments separated by dot. They are:
-1. Attribute name
-2. Validation rule identifier
+Every message key can have three segments separated by dot. They are:<br>
+1. Attribute name<br>
+2. Validation rule identifier<br>
 3. Validation rule _violation_
 
 With these options you can customize messages from the most general to the most specific. Each violation is set by the rule validating the attribute value. So when writing your own validation rule you may provide your own violations to provide customizability of the validation result and error messages.
