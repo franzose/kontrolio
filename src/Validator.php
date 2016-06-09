@@ -409,8 +409,6 @@ class Validator implements ValidatorInterface
         }
 
         return $data;
-
-        //return isset($this->data[$attribute]) ? $this->data[$attribute] : null;
     }
 
     /**
