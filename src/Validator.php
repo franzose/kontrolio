@@ -389,7 +389,28 @@ class Validator implements ValidatorInterface
      */
     protected function getValue($attribute)
     {
-        return isset($this->data[$attribute]) ? $this->data[$attribute] : null;
+        if ($attribute === null) {
+            return null;
+        }
+
+        if (isset($this->data[$attribute])) {
+            return $this->data[$attribute];
+        }
+
+        $segments = explode('.', $attribute);
+        $data = null;
+
+        foreach ($segments as $segment) {
+            if (!array_key_exists($segment, $this->data)) {
+                return null;
+            }
+
+            $data = $this->data[$segment];
+        }
+
+        return $data;
+
+        //return isset($this->data[$attribute]) ? $this->data[$attribute] : null;
     }
 
     /**

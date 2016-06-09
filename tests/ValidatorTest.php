@@ -79,12 +79,25 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             'foo.is_not_empty' => 'baz',
             'foo.length.min' => 'taz'
         ];
-        
-        $validator = new Validator($data, $rules, $messages);
-        $validator->validate();
-        
+
         $errors = ['foo' => ['baz', 'taz']];
         
+        $validator = new Validator($data, $rules, $messages);
+
+        $this->assertFalse($validator->validate());
+        $this->assertEquals($errors, $validator->getErrors());
+    }
+
+    public function testDotNotation()
+    {
+        $data = ['foo' => ['bar' => null]];
+        $rules = ['foo.bar' => [new Length(5, 15)]];
+        $messages = ['foo.bar.length.min' => 'baz'];
+        $errors = ['foo.bar' => ['baz']];
+
+        $validator = new Validator($data, $rules, $messages);
+
+        $this->assertFalse($validator->validate());
         $this->assertEquals($errors, $validator->getErrors());
     }
     
