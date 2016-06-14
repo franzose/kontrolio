@@ -8,11 +8,6 @@ use InvalidArgumentException;
 use LogicException;
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Range validation rule.
- *
- * @package Kontrolio\Rules\Core
- */
 class Range extends AbstractRule
 {
     /**

@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class IsNull
- *
- * @package Kontrolio\Rules\Core
- */
 class IsNull extends AbstractRule
 {
     /**

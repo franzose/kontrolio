@@ -6,11 +6,6 @@ use InvalidArgumentException;
 use LogicException;
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Length validation rule.
- *
- * @package Kontrolio\Rules\Core
- */
 class Length extends AbstractRule
 {
     /**

@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class Sometimes
- *
- * @package Kontrolio\Rules\Core
- */
 class Sometimes extends AbstractRule
 {
     /**

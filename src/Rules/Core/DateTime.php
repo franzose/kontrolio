@@ -5,11 +5,6 @@ namespace Kontrolio\Rules\Core;
 use DateTime as PhpDateTime;
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class DateTime
- *
- * @package Kontrolio\Rules\Core
- */
 class DateTime extends AbstractRule
 {
     const PATTERN = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';

@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class Url
- *
- * @package Kontrolio\Rules\Core
- */
 class Url extends AbstractRule
 {
     /**

@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class NotBlank
- *
- * @package Kontrolio\Rules\Core
- */
 class NotBlank extends AbstractRule
 {
     /**

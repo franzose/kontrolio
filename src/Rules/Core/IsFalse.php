@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class IsFalse
- *
- * @package Kontrolio\Rules\Core
- */
 class IsFalse extends AbstractRule
 {
     /**

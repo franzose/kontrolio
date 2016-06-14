@@ -4,11 +4,6 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-/**
- * Class Date
- *
- * @package Kontrolio\Rules\Core
- */
 class Date extends AbstractRule
 {
     const PATTERN = '/^(\d{4})-(\d{2})-(\d{2})$/';
