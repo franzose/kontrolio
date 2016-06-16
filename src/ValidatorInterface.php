@@ -51,6 +51,15 @@ interface ValidatorInterface
     public function getMessages();
 
     /**
+     * Sets validation messages.
+     *
+     * @param array $messages
+     * 
+     * @return $this
+     */
+    public function setMessages(array $messages);
+
+    /**
      * Validates given data.
      *
      * @return bool

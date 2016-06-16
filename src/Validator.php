@@ -341,6 +341,20 @@ class Validator implements ValidatorInterface
     }
 
     /**
+     * Sets validation messages.
+     *
+     * @param array $messages
+     *
+     * @return $this
+     */
+    public function setMessages(array $messages)
+    {
+        $this->messages = $messages;
+
+        return $this;
+    }
+
+    /**
      * Validates given data.
      *
      * @return bool
