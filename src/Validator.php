@@ -146,6 +146,20 @@ class Validator implements ValidatorInterface
     }
 
     /**
+     * Sets data that need to be validated.
+     *
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
      * Returns validation rules.
      *
      * @return array

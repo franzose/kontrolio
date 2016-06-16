@@ -17,6 +17,15 @@ interface ValidatorInterface
     public function getData();
 
     /**
+     * Sets data that need to be validated.
+     *
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function setData(array $data);
+
+    /**
      * Returns validation rules.
      *
      * @return array
