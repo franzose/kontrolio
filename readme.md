@@ -4,11 +4,23 @@
 Kontrolio is a simple standalone data validation library inspired by Laravel and Symfony.
 
 ## Setting up validator
-Kontrolio's setup and validation API is pretty standard:
+The best way to setup validator:
  
 ```php
-$validator = new Validator($data, $rules, $messages);
-$validator->validate();
+// In container unaware environments
+$valid = Factory::getInstance()->make($data, $rules, $messages)->validate();
+
+// Using a service container implementation
+$container->singleton('validation', function() {
+    return new Factory;
+});
+
+$container->get('validation')->make($data, $rules, $messages)->validate();
+```
+
+Of course, you can use `Kontrolio\Validator` class directly but then you'll need to provide available validation rules by yourself:
+```php
+$validator = new Validator($data, $rules, $messages)->extend($custom)->validate();
 ```
 
 Data here is supposed to be the key-value pairs—attributes and their values:

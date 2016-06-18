@@ -30,16 +30,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 new EmptyRule
             ]
         ];
-
-        $expectedRules = [
-            'zero' => [new Length(5,15)],
-            'one' => [new EmptyRule],
-            'two' => [
-                new EmptyRule,
-                new EmptyRule,
-            ],
-            'three' => [new EmptyRule]
-        ];
         
         $messages = [
             'zero' => 'foo',
@@ -48,10 +38,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             'three' => 'taz'
         ];
 
-        $validator = new Validator($data, $rules, $messages);
+        $aliases = require __DIR__ . '/../config/aliases.php';
+        $validator = (new Validator($data, $rules, $messages))->extend($aliases);
         
         $this->assertEquals($data, $validator->getData());
-        $this->assertEquals($expectedRules, $validator->getRules());
+        $this->assertEquals($rules, $validator->getRules());
         $this->assertEquals($messages, $validator->getMessages());
     }
 
@@ -65,8 +56,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testParserTakesAvailableRules()
     {
-        Validator::extendAvailableRules([IsNotEmpty::class]);
-
         $data = ['foo' => null];
         $rules = [
             'foo' => [
@@ -82,7 +71,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $errors = ['foo' => ['baz', 'taz']];
         
-        $validator = new Validator($data, $rules, $messages);
+        $validator = (new Validator($data, $rules, $messages))->extend([IsNotEmpty::class]);
 
         $this->assertFalse($validator->validate());
         $this->assertEquals($errors, $validator->getErrors());

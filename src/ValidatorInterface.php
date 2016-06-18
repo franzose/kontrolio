@@ -10,6 +10,15 @@ namespace Kontrolio;
 interface ValidatorInterface
 {
     /**
+     * Extends available rules with new ones.
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function extend(array $rules);
+
+    /**
      * Returns data that's being validated.
      *
      * @return array

@@ -19,4 +19,20 @@ interface FactoryInterface
      * @return ValidatorInterface
      */
     public function make(array $data, array $rules, array $messages = []);
+
+    /**
+     * Extends available rules with new ones.
+     *
+     * @param array $rules
+     *
+     * @return $this
+     */
+    public function extend(array $rules);
+
+    /**
+     * Returns all available validation rules.
+     *
+     * @return array
+     */
+    public function getAvailable();
 }

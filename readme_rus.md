@@ -4,11 +4,23 @@
 Kontrolio — простая библиотека валидации данных без дополнительных зависимостей, вдохновленная Laravel и Symfony.
 
 ## Настраиваем валидатор
-Настройка Kontrolio и API валидации достаточно стандартны:
+Предпочтительный метод создания валидатора:
  
 ```php
-$validator = new Validator($data, $rules, $messages);
-$validator->validate();
+// В средах без контейнера сервисов
+$valid = Factory::getInstance()->make($data, $rules, $messages)->validate();
+
+// Пример использования с контейнером сервисов
+$container->singleton('validation', function() {
+    return new Factory;
+});
+
+$container->get('validation')->make($data, $rules, $messages)->validate();
+```
+
+Конечно, вы можете не использовать фабрику, но тогда вам придётся самостоятельно подключать правила валидации по умолчанию:
+```php
+$validator = new Validator($data, $rules, $messages)->extend($custom)->validate();
 ```
 
 Данные представляют из себя пары ключ-значение, т.е. атрибуты и их значения:

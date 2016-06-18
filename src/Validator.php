@@ -17,18 +17,18 @@ use UnexpectedValueException;
 class Validator implements ValidatorInterface
 {
     /**
-     * List of all available validation rules.
-     *
-     * @var array
-     */
-    protected static $availableRules = [];
-
-    /**
      * Parsed and cached rules.
      *
      * @var array
      */
     protected static $rulesCache = [];
+
+    /**
+     * List of all available validation rules.
+     *
+     * @var array
+     */
+    protected $available = [];
     
     /**
      * Data to validate.
@@ -38,11 +38,18 @@ class Validator implements ValidatorInterface
     protected $data = [];
     
     /**
-     * Validation rules.
+     * Raw validation rules.
      *
      * @var array
      */
     protected $rules = [];
+
+    /**
+     * Formatted validation rules.
+     *
+     * @var array
+     */
+    protected $formattedRules = [];
 
     /**
      * Validation messages.
@@ -82,23 +89,19 @@ class Validator implements ValidatorInterface
     public function __construct(array $data, array $rules, array $messages = [])
     {
         $this->data = $data;
+        $this->rules = $rules;
         $this->messages = $messages;
-        static::extendAvailableRules();
-        $this->setRules($rules);
     }
 
     /**
-     * Extends available rules array.
+     * Extends available rules with new ones.
      *
      * @param array $rules
      *
      * @return $this
-     * @throws UnexpectedValueException
      */
-    public static function extendAvailableRules(array $rules = [])
+    public function extend(array $rules)
     {
-        $defaults = (array) require_once __DIR__ . '/../config/aliases.php';
-
         $keys = array_map(function($key) use ($rules) {
             if (is_int($key)) {
                 return static::getRuleInstance($rules[$key])->getName();
@@ -109,7 +112,9 @@ class Validator implements ValidatorInterface
 
         $mapped = array_combine($keys, array_values($rules));
 
-        static::$availableRules = array_merge($defaults, static::$availableRules, $mapped);
+        $this->available = array_merge($this->available, $mapped);
+
+        return $this;
     }
 
     /**
@@ -133,6 +138,16 @@ class Validator implements ValidatorInterface
         }
 
         return $class->newInstance();
+    }
+
+    /**
+     * Returns all available validation rules.
+     *
+     * @return array
+     */
+    public function getAvailable()
+    {
+        return $this->available;
     }
 
     /**
@@ -180,7 +195,8 @@ class Validator implements ValidatorInterface
      */
     public function setRules(array $rules)
     {
-        $this->rules = $this->formatRules($rules);
+        $this->rules = $rules;
+        $this->formatRules($rules);
 
         return $rules;
     }
@@ -189,7 +205,6 @@ class Validator implements ValidatorInterface
      * Format rules and check proper types.
      *
      * @param array $all
-     * @return array
      * @throws UnexpectedValueException
      */
     private function formatRules(array $all)
@@ -205,7 +220,7 @@ class Validator implements ValidatorInterface
             return $resolved;
         }, $attributes);
 
-        return array_combine($attributes, $rules);
+        $this->formattedRules = array_combine($attributes, $rules);
     }
 
     /**
@@ -305,13 +320,13 @@ class Validator implements ValidatorInterface
      */
     private function getRuleClassName($identifier)
     {
-        if (array_key_exists($identifier, static::$availableRules)) {
-            return static::$availableRules[$identifier];
+        if (array_key_exists($identifier, $this->available)) {
+            return $this->available[$identifier];
         }
 
         throw new UnexpectedValueException(
             sprintf(
-                'Rule identified by `%s` could not be loaded. It must be present in `Validator::$availableRules` array.',
+                'Rule identified by `%s` could not be loaded.',
                 $identifier
             )
         );
@@ -362,7 +377,11 @@ class Validator implements ValidatorInterface
      */
     public function validate()
     {
-        foreach ($this->rules as $attribute => $rules) {
+        if (empty($this->formattedRules)) {
+            $this->formatRules($this->rules);
+        }
+
+        foreach ($this->formattedRules as $attribute => $rules) {
             $this->bypass = false;
 
             foreach ($rules as $rule) {
@@ -501,8 +520,8 @@ class Validator implements ValidatorInterface
      */
     protected function prepareRuleKey($attribute, RuleInterface $rule)
     {
-        foreach (static::$availableRules as $identifier => $availableRule) {
-            if ($availableRule === $rule) {
+        foreach ($this->available as $identifier => $item) {
+            if ($item === $rule) {
                 return $identifier;
             }
         }
