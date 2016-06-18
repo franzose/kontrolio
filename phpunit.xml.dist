@@ -10,7 +10,7 @@
         <ini name="error_reporting" value="-1" />
     </php>
     <testsuites>
-        <testsuite name="Sakh.com Form Library Test Suite">
+        <testsuite name="Kontrolio Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
