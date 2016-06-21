@@ -120,22 +120,22 @@ class MyRule extends AbstractRule
 ## Собственные правила
 Естественно, ничто не мешает вам создавать собственные правила. Просто помните, что любое правило должно реализовывать интерфейс `Kontrolio\Rules\RuleInterface`, метод `isValid()` и иметь идентификатор. По умолчанию, для удобства идентификатор выводится абстрактным классом `Kontrolio\Rules\AbstractRule` и основывается на имени класса без учета пространства имён. Тем не менее, вы можете переопределить идентификатор, переопределив метод `getName()`.
 
-Чтобы уведомить валидатор о новых правилам, вам необходимо добавить их в валидатор вручную, используя метод `Kontrolio\Validator::extendAvailableRules()`:
+Добавить правила в валидатор вы можете как через фабрику, так и непосредственно через сервис валидации:
 
 ```php
-Validator::extendAvailableRules([
-   FirstRule::class,
-   SecondRule::class
-])
-```
+$factory = (new Factory)->extend([CustomRule::class]);
 
-Также вы можете переопределить автоматически выводимые идентификаторы:
+// с кастомным идентификатором
+$factory = (new Factory)->extend(['some_custom' => CustomRule::class]);
+$validator = $factory->make([], [], []);
 
-```php
-Validator::extendAvailableRules([
-   'foo' => FirstRule::class,
-   'bar' => SecondRule::class
-])
+// если вы не используете фабрику
+$validator = new Validator([], [], []);
+$validator->extend([CustomRule::class]);
+
+// с кастомным идентификатором
+$validator->extend(['custom' => CustomRule::class]);
+$validator->validate();
 ```
 
 ## Пропускаем полностью валидацию атрибута

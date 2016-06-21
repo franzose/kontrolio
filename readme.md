@@ -120,22 +120,22 @@ Callable rule is nothing more than a closure or function that takes an attribute
 ## Custom rules
 Of course you can create your custom rules. Just remember that each rule must be an instance of `Kontrolio\Rules\RuleInterface`, implement `isValid()` method and have an identifier. By default, identifiers are resolved by `Kontrolio\Rules\AbstractRule` and are based on the rule class name without namespace. However you can override this behavior if you wish overriding `getName()` method.
 
-To let the validator know about your custom validation rules you need to manually add them by using `Kontrolio\Validator::extendAvailableRules()` static method as follows:
+Custom rules can be added eighter via factory or validator itself:
 
 ```php
-Validator::extendAvailableRules([
-   FirstRule::class,
-   SecondRule::class
-])
-```
+$factory = (new Factory)->extend([CustomRule::class]);
 
-If you want to use custom identifiers you can do that as well:
+// with a custom identifier
+$factory = (new Factory)->extend(['some_custom' => CustomRule::class]);
+$validator = $factory->make([], [], []);
 
-```php
-Validator::extendAvailableRules([
-   'foo' => FirstRule::class,
-   'bar' => SecondRule::class
-])
+// if you don't use factory
+$validator = new Validator([], [], []);
+$validator->extend([CustomRule::class]);
+
+// with a custom identifier
+$validator->extend(['custom' => CustomRule::class]);
+$validator->validate();
 ```
 
 ## Bypassing attribute's value validation completely
