@@ -642,6 +642,24 @@ class Validator implements ValidatorInterface
     }
 
     /**
+     * Returns a plain validation errors array without their attribute names.
+     *
+     * @return array
+     */
+    public function getErrorsList()
+    {
+        $list = [];
+
+        foreach ($this->errors as $messages) {
+            foreach ($messages as $message) {
+                $list[] = $message;
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * Determines whether validation should stop on the first failure.
      *
      * @param bool $stop

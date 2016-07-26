@@ -91,6 +91,13 @@ interface ValidatorInterface
     public function getErrors();
 
     /**
+     * Returns a plain validation errors array without their attribute names.
+     *
+     * @return array
+     */
+    public function getErrorsList();
+
+    /**
      * Determines whether validation should stop on the first failure.
      *
      * @param bool $stop

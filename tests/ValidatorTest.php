@@ -173,4 +173,44 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $validator->getErrors());
     }
+
+    public function testGetErrorsListReturnsPlainArray()
+    {
+        $data = [
+            'foo' => null,
+            'bar' => null
+        ];
+
+        $rules = [
+            'foo' => [
+                new IsNotEmpty,
+                new FooBarRule
+            ],
+            'bar' => [
+                new IsNotEmpty,
+                new FooBarRule
+            ]
+        ];
+
+        $messages = [
+            'foo.is_not_empty' => 'message 1',
+            'foo.foo_bar' => 'message 2',
+            'bar.is_not_empty' => 'message 3',
+            'bar.foo_bar' => 'message 4'
+        ];
+
+        $validator = new Validator($data, $rules, $messages);
+        $validator->validate();
+
+        $errors = $validator->getErrorsList();
+        $expected = [
+            'message 1',
+            'message 2',
+            'message 3',
+            'message 4'
+        ];
+
+        $this->assertCount(4, $errors);
+        $this->assertEquals($expected, $errors);
+    }
 }
