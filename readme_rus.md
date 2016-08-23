@@ -1,7 +1,7 @@
 [In English](https://github.com/franzose/kontrolio/blob/master/readme.md)
 
 # Kontrolio: держите свои данные под контролем.
-Kontrolio — простая библиотека валидации данных без дополнительных зависимостей, вдохновленная Laravel и Symfony.
+Kontrolio — простая библиотека валидации данных без дополнительных зависимостей, вдохновленная Laravel и Symfony. [ [Пост на Medium](https://medium.com/@franzose/keep-your-data-under-control-530c23e59fb3) ]
 
 ## Настраиваем валидатор
 Предпочтительный метод создания валидатора:
