@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'accepted' => \Kontrolio\Rules\Core\Accepted::class,
+    'alpha' => \Kontrolio\Rules\Core\Alpha::class,
+    'alphadash' => \Kontrolio\Rules\Core\Alphadash::class,
+    'alphanum' => \Kontrolio\Rules\Core\Alphanum::class,
     'blank' => \Kontrolio\Rules\Core\Blank::class,
     'card_scheme' => \Kontrolio\Rules\Core\CardScheme::class,
     'date' => \Kontrolio\Rules\Core\Date::class,
