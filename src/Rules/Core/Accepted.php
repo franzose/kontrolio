@@ -9,17 +9,18 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Accepted extends AbstractRule
+class Accepted extends IsIn
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+
+    public function __construct()
     {
-        return in_array($input, ['yes', 'on', 1, '1', true, 'true'], true);
+        parent::__construct([
+            'yes',
+            'on',
+            1,
+            '1',
+            true,
+            'true'
+        ]);
     }
 }

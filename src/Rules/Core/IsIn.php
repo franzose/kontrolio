@@ -15,7 +15,7 @@ class IsIn extends AbstractRule
     /**
      * @var bool
      */
-    protected $strictCompare = true;
+    protected $strictCompare;
 
     /**
      * @var array
