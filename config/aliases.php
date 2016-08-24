@@ -30,6 +30,7 @@ return [
     'ogrn' => \Kontrolio\Rules\Core\Ogrn::class,
     'okpo' => \Kontrolio\Rules\Core\Okpo::class,
     'range' => \Kontrolio\Rules\Core\Range::class,
+    'is_in' => \Kontrolio\Rules\Core\IsIn::class,
     'snils' => \Kontrolio\Rules\Core\Snils::class,
     'sometimes' => \Kontrolio\Rules\Core\Sometimes::class,
     'time' => \Kontrolio\Rules\Core\Time::class,
