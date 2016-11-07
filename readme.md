@@ -1,3 +1,5 @@
+[![](https://img.shields.io/packagist/dt/franzose/kontrolio.svg)](https://packagist.org/packages/franzose/kontrolio)
+
 [На русском](https://github.com/franzose/kontrolio/blob/master/readme_rus.md)
 
 # Kontrolio: keep your data under control.
