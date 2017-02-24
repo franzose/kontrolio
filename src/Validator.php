@@ -391,7 +391,7 @@ class Validator implements ValidatorInterface
                 $this->handle($attribute, $rule);
 
                 if ($this->bypass) {
-                    continue;
+                    continue 2;
                 }
                 
                 if ($this->shouldStopOnFailure($attribute)) {

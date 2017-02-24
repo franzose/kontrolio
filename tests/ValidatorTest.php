@@ -3,6 +3,7 @@
 namespace Kontrolio\Tests;
 
 use Kontrolio\Rules\Core\Length;
+use Kontrolio\Rules\Core\Sometimes;
 use Kontrolio\Tests\TestHelpers\IsNotEmpty;
 use Kontrolio\Tests\TestHelpers\EmptyRule;
 use Kontrolio\Tests\TestHelpers\FooBarRule;
@@ -138,6 +139,27 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->validate(['foo' => 'bar'], $rules, $messages));
         $this->assertTrue($this->validate(['foo' => 'foo'], $rules, $messages));
         $this->assertTrue($this->validate(['foo' => null], ['foo' => new EmptyRule()], ['foo' => 'baz']));
+    }
+
+    public function testBypassingValidation()
+    {
+        $rules = [
+            'foo' => [
+                new Sometimes(),
+                new Length(5, 15)
+            ],
+            'bar' => [
+                new Sometimes(),
+                new Length(5, 15)
+            ]
+        ];
+
+        $data = [
+            'foo' => null,
+            'bar' => ''
+        ];
+
+        $this->assertTrue($this->validate($data, $rules));
     }
     
     public function testStoppingOnFirstFailure()
