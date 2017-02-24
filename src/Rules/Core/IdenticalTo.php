@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractComparisonRule;
 
+/**
+ * Identity validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class IdenticalTo extends AbstractComparisonRule
 {
     /**

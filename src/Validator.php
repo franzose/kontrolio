@@ -102,7 +102,7 @@ class Validator implements ValidatorInterface
      */
     public function extend(array $rules)
     {
-        $keys = array_map(function($key) use ($rules) {
+        $keys = array_map(function ($key) use ($rules) {
             if (is_int($key)) {
                 return static::getRuleInstance($rules[$key])->getName();
             }
@@ -152,7 +152,7 @@ class Validator implements ValidatorInterface
 
     /**
      * Returns data that's being validated.
-     * 
+     *
      * @return array
      */
     public function getData()
@@ -198,7 +198,7 @@ class Validator implements ValidatorInterface
         $this->rules = $rules;
         $this->formatRules($rules);
 
-        return $rules;
+        return $this;
     }
 
     /**
@@ -317,6 +317,7 @@ class Validator implements ValidatorInterface
      * @param string $identifier
      *
      * @return string
+     * @throws UnexpectedValueException
      */
     private function getRuleClassName($identifier)
     {
@@ -341,7 +342,9 @@ class Validator implements ValidatorInterface
     private static function checkRuleType($rule)
     {
         if (!$rule instanceof RuleInterface && !is_callable($rule)) {
-            throw new UnexpectedValueException(sprintf('Rule must implement `%s` or be callable.', RuleInterface::class));
+            throw new UnexpectedValueException(
+                sprintf('Rule must implement `%s` or be callable.', RuleInterface::class)
+            );
         }
     }
 
@@ -494,7 +497,7 @@ class Validator implements ValidatorInterface
 
     /**
      * Creates new validation error message.
-     * 
+     *
      * @param string $attribute
      * @param RuleInterface $rule
      */
@@ -572,7 +575,7 @@ class Validator implements ValidatorInterface
     private function getMessagesByAttributeAndRuleName($attribute, $ruleName)
     {
         $prefix = $attribute . '.' . $ruleName;
-        $messages = array_filter($this->messages, function($key) use ($attribute, $prefix) {
+        $messages = array_filter($this->messages, function ($key) use ($attribute, $prefix) {
             return $key === $attribute || strpos($key, $prefix) === 0;
         }, ARRAY_FILTER_USE_KEY);
 

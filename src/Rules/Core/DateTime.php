@@ -5,6 +5,11 @@ namespace Kontrolio\Rules\Core;
 use DateTime as PhpDateTime;
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * Date and time validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class DateTime extends AbstractRule
 {
     const PATTERN = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
@@ -37,7 +42,7 @@ class DateTime extends AbstractRule
         foreach ($errors['warnings'] as $warning) {
             if ($warning === 'The parsed date was invalid') {
                 $this->violations[] = 'date';
-            } else if ($warning === 'The parsed time was invalid') {
+            } elseif ($warning === 'The parsed time was invalid') {
                 $this->violations[] = 'time';
             } else {
                 $this->violations[] = 'format';

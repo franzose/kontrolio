@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * IP address validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class Ip extends AbstractRule
 {
     const V4 = '4';

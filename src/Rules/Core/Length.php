@@ -6,6 +6,11 @@ use InvalidArgumentException;
 use LogicException;
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * Length validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class Length extends AbstractRule
 {
     /**
@@ -42,8 +47,7 @@ class Length extends AbstractRule
         $min = null,
         $max = null,
         $charset = 'UTF-8'
-    )
-    {
+    ) {
         if ($min === null && $max === null) {
             throw new InvalidArgumentException('Either option "min" or "max" must be given.');
         }

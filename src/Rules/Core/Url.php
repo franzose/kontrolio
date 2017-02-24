@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * URL validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class Url extends AbstractRule
 {
     /**

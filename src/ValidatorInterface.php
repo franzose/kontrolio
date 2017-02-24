@@ -63,7 +63,7 @@ interface ValidatorInterface
      * Sets validation messages.
      *
      * @param array $messages
-     * 
+     *
      * @return $this
      */
     public function setMessages(array $messages);
@@ -101,7 +101,7 @@ interface ValidatorInterface
      * Determines whether validation should stop on the first failure.
      *
      * @param bool $stop
-     * 
+     *
      * @return $this
      */
     public function shouldStopOnFirstFailure($stop = true);

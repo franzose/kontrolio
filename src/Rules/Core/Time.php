@@ -5,6 +5,11 @@ namespace Kontrolio\Rules\Core;
 use DateTime as PhpDateTime;
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * Time validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class Time extends AbstractRule
 {
     const PATTERN = '/^(\d{2}):(\d{2}):(\d{2})$/';

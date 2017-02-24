@@ -72,12 +72,20 @@ class CallableRuleWrapper extends AbstractRule
             $this->name = $attributes['name'];
         }
 
-        $this->valid = boolval($attributes['valid']);
-        $this->emptyAllowed = isset($attributes['empty_allowed']) ? boolval($attributes['empty_allowed']) : false;
-        $this->skip = isset($attributes['skip']) ? boolval($attributes['skip']) : false;
+        $this->valid = (bool) $attributes['valid'];
+        $this->emptyAllowed = isset($attributes['empty_allowed'])
+            ? (bool) $attributes['empty_allowed']
+            : false;
+
+        $this->skip = isset($attributes['skip']) ? (bool) $attributes['skip'] : false;
         $this->violations = isset($attributes['violations']) ? $attributes['violations'] : [];
     }
 
+    /**
+     * Returns validation rule identifier.
+     *
+     * @return string
+     */
     public function getName()
     {
         if (isset($this->name)) {
@@ -87,11 +95,25 @@ class CallableRuleWrapper extends AbstractRule
         return uniqid(parent::getName() . '_', true);
     }
 
+    /**
+     * Validates input.
+     *
+     * @param mixed $input
+     *
+     * @return bool
+     */
     public function isValid($input = null)
     {
         return $this->valid;
     }
 
+    /**
+     * When simply true or some conditions return true, informs validator service that validation can be skipped.
+     *
+     * @param mixed $input
+     *
+     * @return bool
+     */
     public function canSkipValidation($input = null)
     {
         return $this->skip;

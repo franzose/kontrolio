@@ -18,7 +18,7 @@ trait FactoryAwareTrait
 
     /**
      * Returns validation factory instance.
-     * 
+     *
      * @return FactoryInterface
      */
     public function getValidationFactory()

@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractComparisonRule;
 
+/**
+ * Not identical to validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class NotIdenticalTo extends AbstractComparisonRule
 {
     /**

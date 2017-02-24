@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
+/**
+ * Not blank validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class NotBlank extends AbstractRule
 {
     /**

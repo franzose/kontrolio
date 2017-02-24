@@ -4,6 +4,11 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractComparisonRule;
 
+/**
+ * Less than validation rule.
+ *
+ * @package Kontrolio\Rules\Core
+ */
 class LessThan extends AbstractComparisonRule
 {
     /**
