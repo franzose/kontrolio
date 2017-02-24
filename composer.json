@@ -1,5 +1,5 @@
 {
-  "name": "franzose/kontrolio",
+  "name": "dimmount/kontrolio",
   "type": "library",
   "description": "Simple and standalone data validation library inspired by Laravel and Symfony",
   "keywords": ["validation", "laravel", "symfony"],
