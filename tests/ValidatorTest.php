@@ -161,6 +161,28 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->validate($data, $rules));
     }
+
+    public function testBypassingEmpyValues()
+    {
+        $rules = [
+            'foo' => (new Length(5, 15))->allowEmptyValue(),
+            'bar' => new Length(5, 15)
+        ];
+
+        $data = [
+            'foo' => null,
+            'bar' => '12345'
+        ];
+
+        $this->assertTrue($this->validate($data, $rules));
+
+        $data = [
+            'foo' => '123',
+            'bar' => '12345'
+        ];
+
+        $this->assertFalse($this->validate($data, $rules));
+    }
     
     public function testStoppingOnFirstFailure()
     {

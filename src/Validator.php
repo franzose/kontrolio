@@ -422,7 +422,7 @@ class Validator implements ValidatorInterface
         }
 
         if ($rule->canSkipValidation($value) ||
-            $rule->emptyValueAllowed() ||
+            ($rule->emptyValueAllowed() && $this->valueIsEmpty($value)) ||
             $rule->isValid($value)) {
             return;
         }
