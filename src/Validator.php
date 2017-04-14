@@ -633,7 +633,7 @@ class Validator implements ValidatorInterface
      */
     protected function shouldStopOnFailure($attribute)
     {
-        return ($this->shouldStop || $this->shouldStopWithinGroup)
+        return ($this->shouldStop || $this->shouldStopWithinAttribute)
                && array_key_exists($attribute, $this->errors);
     }
 
