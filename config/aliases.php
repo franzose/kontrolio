@@ -34,5 +34,6 @@ return [
     'snils' => \Kontrolio\Rules\Core\Snils::class,
     'sometimes' => \Kontrolio\Rules\Core\Sometimes::class,
     'time' => \Kontrolio\Rules\Core\Time::class,
+    'until_first_failure' => \Kontrolio\Rules\Core\UntilFirstFailure::class,
     'url' => \Kontrolio\Rules\Core\Url::class
 ];

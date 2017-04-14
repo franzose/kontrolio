@@ -3,6 +3,7 @@
 namespace Kontrolio;
 
 use Kontrolio\Rules\Core\Sometimes;
+use Kontrolio\Rules\Core\UntilFirstFailure;
 use OutOfBoundsException;
 use ReflectionClass;
 use Kontrolio\Rules\CallableRuleWrapper;
@@ -71,6 +72,13 @@ class Validator implements ValidatorInterface
      * @var bool
      */
     protected $shouldStop = false;
+
+    /**
+     * Flag indication that the validation of the current attribute should stop.
+     *
+     * @var bool
+     */
+    protected $shouldStopWithinAttribute = false;
 
     /**
      * Flag indicating that the validation can be bypassed.
@@ -210,7 +218,7 @@ class Validator implements ValidatorInterface
     private function formatRules(array $all)
     {
         $attributes = array_keys($all);
-        $rules = array_map(function($attribute) use ($all) {
+        $rules = array_map(function ($attribute) use ($all) {
             $resolved = $this->resolveRules($all[$attribute]);
 
             if (!is_array($resolved)) {
@@ -386,11 +394,16 @@ class Validator implements ValidatorInterface
 
         foreach ($this->formattedRules as $attribute => $rules) {
             $this->bypass = false;
+            $this->shouldStopWithinAttribute = false;
 
             foreach ($rules as $rule) {
+                if ($rule instanceof UntilFirstFailure) {
+                    $this->shouldStopWithinAttribute = true;
+                }
+
                 $this->handle($attribute, $rule);
 
-                if ($this->bypass) {
+                if ($this->shouldProceedToTheNextAttribute($rule)) {
                     continue 2;
                 }
                 
@@ -620,8 +633,20 @@ class Validator implements ValidatorInterface
      */
     protected function shouldStopOnFailure($attribute)
     {
-        return $this->shouldStop &&
-               array_key_exists($attribute, $this->errors);
+        return ($this->shouldStop || $this->shouldStopWithinGroup)
+               && array_key_exists($attribute, $this->errors);
+    }
+
+    /**
+     * Determines whether validator should proceed to the next attribute
+     *
+     * @param RuleInterface|\Closure $rule
+     *
+     * @return bool
+     */
+    protected function shouldProceedToTheNextAttribute($rule)
+    {
+        return $this->bypass || ($this->shouldStopWithinAttribute && !$rule instanceof UntilFirstFailure);
     }
 
     /**

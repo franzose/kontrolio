@@ -4,6 +4,7 @@ namespace Kontrolio\Tests;
 
 use Kontrolio\Rules\Core\Length;
 use Kontrolio\Rules\Core\Sometimes;
+use Kontrolio\Rules\Core\UntilFirstFailure;
 use Kontrolio\Tests\TestHelpers\IsNotEmpty;
 use Kontrolio\Tests\TestHelpers\EmptyRule;
 use Kontrolio\Tests\TestHelpers\FooBarRule;
@@ -216,6 +217,41 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->shouldStopOnFirstFailure()->validate();
 
         $this->assertCount(1, $validator->getErrors());
+    }
+
+    public function testStoppingOnFirstFailureWithinRulesGroup()
+    {
+        $data = [
+            'foo' => null,
+            'bar' => null
+        ];
+
+        $rules = [
+            'foo' => [
+                new UntilFirstFailure,
+                new IsNotEmpty,
+                new FooBarRule
+            ],
+            'bar' => [
+                new IsNotEmpty,
+                new FooBarRule
+            ]
+        ];
+
+        $messages = [
+            'foo.is_not_empty' => 'Foo must not be empty.',
+            'bar.is_not_empty' => 'Bar must not be empty.'
+        ];
+
+        $validator = new Validator($data, $rules, $messages);
+        $validator->validate();
+        $errors = $validator->getErrors();
+
+        $this->assertCount(2, $errors);
+        $this->assertArrayHasKey('foo', $errors);
+        $this->assertCount(1, $errors['foo']);
+        $this->assertArrayHasKey('bar', $errors);
+        $this->assertCount(2, $errors['bar']);
     }
 
     public function testGetErrorsListReturnsPlainArray()

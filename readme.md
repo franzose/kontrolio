@@ -154,6 +154,34 @@ $rules = [
 ];
 ```
 
+## Stopping validation on the first failure
+You can tell the validator to stop validation if any validation error occurs:
+```php
+$validator->shouldStopOnFailure()->validate();
+```
+
+## Stopping certain attribute's validation on the first failure
+Using `UntilFirstFailure` validation rule, you can also stop validation of a single attribute while keeping validation as a whole:
+```php
+$data = [
+    'attr' => '',
+    'attr2' => 'value2'
+];
+
+$rules = [
+    'attr' => [
+        new UntilFirstFailure,
+        new NotBlank,
+        new NotFooBar
+    ]
+];
+
+$messages = [<...>];
+
+$validator = new Validator($data, $rules, $messages)->validate();
+```
+Now when `attr` fail with `NotBlank` rule, its validation will be stopped and validator will proceed to the `attr2`.
+
 ## Error messages and rule violations
 Error messages has a single simple format you'll love:
 
