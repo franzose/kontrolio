@@ -223,35 +223,41 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $data = [
             'foo' => null,
-            'bar' => null
+            'bar' => 1234,
+            'baz' => null
         ];
 
         $rules = [
             'foo' => [
-                new UntilFirstFailure,
                 new IsNotEmpty,
                 new FooBarRule
             ],
             'bar' => [
+                new UntilFirstFailure,
                 new IsNotEmpty,
-                new FooBarRule
+                new FooBarRule,
+                new Length(5, 10)
+            ],
+            'baz' => [
+                new FooBarRule,
+                new IsNotEmpty,
             ]
         ];
 
         $messages = [
             'foo.is_not_empty' => 'Foo must not be empty.',
-            'bar.is_not_empty' => 'Bar must not be empty.'
+            'bar.is_not_empty' => 'Bar must not be empty.',
+            'bar.foo_bar' => 'Bar must be bar.',
         ];
 
         $validator = new Validator($data, $rules, $messages);
         $validator->validate();
         $errors = $validator->getErrors();
 
-        $this->assertCount(2, $errors);
-        $this->assertArrayHasKey('foo', $errors);
-        $this->assertCount(1, $errors['foo']);
-        $this->assertArrayHasKey('bar', $errors);
-        $this->assertCount(2, $errors['bar']);
+        $this->assertCount(3, $errors);
+        $this->assertTrue(isset($errors['foo'], $errors['bar'], $errors['baz']));
+        $this->assertCount(2, $errors['foo']);
+        $this->assertCount(1, $errors['bar']);
     }
 
     public function testGetErrorsListReturnsPlainArray()

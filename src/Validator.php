@@ -403,7 +403,7 @@ class Validator implements ValidatorInterface
 
                 $this->handle($attribute, $rule);
 
-                if ($this->shouldProceedToTheNextAttribute($rule)) {
+                if ($this->shouldProceedToTheNextAttribute($attribute)) {
                     continue 2;
                 }
                 
@@ -640,13 +640,25 @@ class Validator implements ValidatorInterface
     /**
      * Determines whether validator should proceed to the next attribute
      *
-     * @param RuleInterface|\Closure $rule
+     * @param string $attribute
      *
      * @return bool
      */
-    protected function shouldProceedToTheNextAttribute($rule)
+    protected function shouldProceedToTheNextAttribute($attribute)
     {
-        return $this->bypass || ($this->shouldStopWithinAttribute && !$rule instanceof UntilFirstFailure);
+        return $this->bypass || ($this->shouldStopWithinAttribute && $this->attributeHasErrors($attribute));
+    }
+
+    /**
+     * Checks whether an attribute already has errors
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    protected function attributeHasErrors($attribute)
+    {
+        return !empty($this->errors[$attribute]);
     }
 
     /**
