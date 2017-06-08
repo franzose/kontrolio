@@ -434,6 +434,10 @@ class Validator implements ValidatorInterface
             return;
         }
 
+        if($this->bypass && $this->valueIsEmpty($value)){
+            return;
+        }
+
         if ($rule->canSkipValidation($value) ||
             ($rule->emptyValueAllowed() && $this->valueIsEmpty($value)) ||
             $rule->isValid($value)) {
