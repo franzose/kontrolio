@@ -3,7 +3,7 @@
 [На русском](https://github.com/franzose/kontrolio/blob/master/readme_rus.md)
 
 # Kontrolio: keep your data under control.
-Kontrolio is a simple standalone data validation library inspired by Laravel and Symfony.
+Kontrolio is a simple standalone data validation library inspired by Laravel and Symfony and compatible with PHP 5.4+.
 [ [Read on on Medium](https://medium.com/@franzose/keep-your-data-under-control-530c23e59fb3) ]
 
 ## Setting up validator
