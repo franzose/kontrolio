@@ -592,6 +592,10 @@ class Validator implements ValidatorInterface
             return $key === $attribute || strpos($key, $prefix) === 0;
         }, ARRAY_FILTER_USE_KEY);
 
+        if (empty($messages)) {
+            $messages = [$prefix];
+        }
+
         return $messages;
     }
 
