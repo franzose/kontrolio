@@ -1,4 +1,5 @@
 [![](https://img.shields.io/packagist/dt/franzose/kontrolio.svg)](https://packagist.org/packages/franzose/kontrolio)
+[![](https://travis-ci.org/franzose/kontrolio.svg?branch=master)](https://packagist.org/packages/franzose/kontrolio)
 
 [In English](https://github.com/franzose/kontrolio/blob/master/readme.md)
 
