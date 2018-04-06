@@ -6,6 +6,8 @@ return [
     'alphadash' => \Kontrolio\Rules\Core\Alphadash::class,
     'alphanum' => \Kontrolio\Rules\Core\Alphanum::class,
     'blank' => \Kontrolio\Rules\Core\Blank::class,
+    'between' => \Kontrolio\Rules\Core\Between::class,
+    'between_inclusive' => \Kontrolio\Rules\Core\BetweenInclusive::class,
     'card_scheme' => \Kontrolio\Rules\Core\CardScheme::class,
     'date' => \Kontrolio\Rules\Core\Date::class,
     'date_time' => \Kontrolio\Rules\Core\DateTime::class,
