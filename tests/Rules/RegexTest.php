@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Regex;
+use PHPUnit\Framework\TestCase;
 
-class RegexTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

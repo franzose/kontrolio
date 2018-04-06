@@ -10,8 +10,9 @@ namespace Kontrolio\Tests\Rules;
 
 
 use Kontrolio\Rules\Core\Date;
+use PHPUnit\Framework\TestCase;
 
-class DateTest extends \PHPUnit_Framework_TestCase
+class DateTest extends TestCase
 {
     public function testBasicValidation()
     {

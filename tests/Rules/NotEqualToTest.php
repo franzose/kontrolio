@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\NotEqualTo;
+use PHPUnit\Framework\TestCase;
 
-class NotEqualToTest extends \PHPUnit_Framework_TestCase
+class NotEqualToTest extends TestCase
 {
     public function testValidation()
     {

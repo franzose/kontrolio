@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Email;
+use PHPUnit\Framework\TestCase;
 
-class EmailTest extends \PHPUnit_Framework_TestCase
+class EmailTest extends TestCase
 {
     public function testBasicValidation()
     {

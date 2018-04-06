@@ -5,8 +5,9 @@ namespace Kontrolio\Tests\Rules;
 use Kontrolio\Rules\Core\EachPassed;
 use Kontrolio\Rules\Core\Email;
 use Kontrolio\Rules\Core\Length;
+use PHPUnit\Framework\TestCase;
 
-class EachPassedTest extends \PHPUnit_Framework_TestCase
+class EachPassedTest extends TestCase
 {
     public function testValidation()
     {

@@ -10,8 +10,9 @@ use Kontrolio\Tests\TestHelpers\EmptyRule;
 use Kontrolio\Tests\TestHelpers\FooBarRule;
 use Kontrolio\Tests\TestHelpers\SkippableRule;
 use Kontrolio\Validator;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends TestCase
 {
     private function validate($data = [], $rules = [], $messages = [])
     {

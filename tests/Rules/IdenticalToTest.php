@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\IdenticalTo;
+use PHPUnit\Framework\TestCase;
 
-class IdenticalToTest extends \PHPUnit_Framework_TestCase
+class IdenticalToTest extends TestCase
 {
     public function testValidation()
     {

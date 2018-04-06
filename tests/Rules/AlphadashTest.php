@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Alphadash;
+use PHPUnit\Framework\TestCase;
 
-class AlphadashTest extends \PHPUnit_Framework_TestCase
+class AlphadashTest extends TestCase
 {
     public function testValidation()
     {

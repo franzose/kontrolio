@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Tests\Rules\TestHelpers\DummyRule;
+use PHPUnit\Framework\TestCase;
 
-class CommonRuleTest extends \PHPUnit_Framework_TestCase
+class CommonRuleTest extends TestCase
 {
     public function testGetNameReturnsSnakeCase()
     {

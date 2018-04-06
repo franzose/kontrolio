@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\EqualTo;
+use PHPUnit\Framework\TestCase;
 
-class EqualToTest extends \PHPUnit_Framework_TestCase
+class EqualToTest extends TestCase
 {
     public function testValidation()
     {

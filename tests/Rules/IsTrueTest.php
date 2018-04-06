@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\IsFalse;
+use PHPUnit\Framework\TestCase;
 
-class IsFalseTest extends \PHPUnit_Framework_TestCase
+class IsFalseTest extends TestCase
 {
     public function testValidation()
     {

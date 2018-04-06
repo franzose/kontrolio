@@ -6,8 +6,9 @@ use Kontrolio\Rules\Core\EqualTo;
 use Kontrolio\Rules\Core\FirstPassed;
 use Kontrolio\Rules\Core\IsNull;
 use Kontrolio\Rules\Core\Length;
+use PHPUnit\Framework\TestCase;
 
-class FirstPassedTest extends \PHPUnit_Framework_TestCase
+class FirstPassedTest extends TestCase
 {
     public function testValidation()
     {

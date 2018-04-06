@@ -3,13 +3,14 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\IsIn;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class IsInTest
  * @package Kontrolio\Tests\Rules
  * @author maximkou <maximkou@gmail.com>
  */
-class IsInTest extends \PHPUnit_Framework_TestCase
+class IsInTest extends TestCase
 {
 
     /**

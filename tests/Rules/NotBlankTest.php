@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\NotBlank;
+use PHPUnit\Framework\TestCase;
 
-class NotBlankTest extends \PHPUnit_Framework_TestCase
+class NotBlankTest extends TestCase
 {
     public function testValidation()
     {

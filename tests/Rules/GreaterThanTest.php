@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\GreaterThan;
+use PHPUnit\Framework\TestCase;
 
-class GreaterThanTest extends \PHPUnit_Framework_TestCase
+class GreaterThanTest extends TestCase
 {
     public function testValidation()
     {

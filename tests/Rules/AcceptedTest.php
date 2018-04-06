@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Accepted;
+use PHPUnit\Framework\TestCase;
 
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class AcceptedTest extends TestCase
 {
     public function testValidation()
     {

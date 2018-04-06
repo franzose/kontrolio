@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Alpha;
+use PHPUnit\Framework\TestCase;
 
-class AlphaTest extends \PHPUnit_Framework_TestCase
+class AlphaTest extends TestCase
 {
     public function testValidation()
     {

@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Url;
+use PHPUnit\Framework\TestCase;
 
-class UrlTest extends \PHPUnit_Framework_TestCase
+class UrlTest extends TestCase
 {
     public function testValidation()
     {

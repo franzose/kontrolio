@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\NotNull;
+use PHPUnit\Framework\TestCase;
 
-class NotNullTest extends \PHPUnit_Framework_TestCase
+class NotNullTest extends TestCase
 {
     public function testValidation()
     {

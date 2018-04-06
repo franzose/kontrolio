@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Alphanum;
+use PHPUnit\Framework\TestCase;
 
-class AlphanumTest extends \PHPUnit_Framework_TestCase
+class AlphanumTest extends TestCase
 {
     public function testValidation()
     {

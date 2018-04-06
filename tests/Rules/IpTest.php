@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Ip;
+use PHPUnit\Framework\TestCase;
 
-class IpTest extends \PHPUnit_Framework_TestCase
+class IpTest extends TestCase
 {
     public function testValidation()
     {

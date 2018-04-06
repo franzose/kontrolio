@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\Length;
+use PHPUnit\Framework\TestCase;
 
-class LengthTest extends \PHPUnit_Framework_TestCase
+class LengthTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

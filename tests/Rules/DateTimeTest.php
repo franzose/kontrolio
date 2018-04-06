@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\DateTime;
+use PHPUnit\Framework\TestCase;
 
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends TestCase
 {
     public function testBasicValidation()
     {

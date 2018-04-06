@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests\Rules;
 
 use Kontrolio\Rules\Core\LessThan;
+use PHPUnit\Framework\TestCase;
 
-class LessThanTest extends \PHPUnit_Framework_TestCase
+class LessThanTest extends TestCase
 {
     public function testValidation()
     {

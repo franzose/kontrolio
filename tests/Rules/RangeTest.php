@@ -4,8 +4,9 @@ namespace Kontrolio\Tests\Rules;
 
 use DateTime;
 use Kontrolio\Rules\Core\Range;
+use PHPUnit\Framework\TestCase;
 
-class RangeTest extends \PHPUnit_Framework_TestCase
+class RangeTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException

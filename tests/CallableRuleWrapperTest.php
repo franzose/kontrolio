@@ -3,8 +3,9 @@
 namespace Kontrolio\Tests;
 
 use Kontrolio\Rules\CallableRuleWrapper;
+use PHPUnit\Framework\TestCase;
 
-class CallableRuleWrapperTest extends \PHPUnit_Framework_TestCase
+class CallableRuleWrapperTest extends TestCase
 {
     /**
      * @expectedException \UnexpectedValueException
