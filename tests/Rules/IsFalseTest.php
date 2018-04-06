@@ -11,9 +11,9 @@ class IsTrueTest extends TestCase
     {
         $rule = new IsTrue;
         
-        $this->assertFalse($rule->isValid('foo'));
-        $this->assertFalse($rule->isValid(''));
-        $this->assertFalse($rule->isValid());
-        $this->assertTrue($rule->isValid(true));
+        static::assertFalse($rule->isValid('foo'));
+        static::assertFalse($rule->isValid(''));
+        static::assertFalse($rule->isValid());
+        static::assertTrue($rule->isValid(true));
     }
 }

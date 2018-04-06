@@ -11,11 +11,11 @@ class AcceptedTest extends TestCase
     {
         $rule = new Accepted;
 
-        $this->assertFalse($rule->isValid('føó'));
-        $this->assertFalse($rule->isValid(''));
+        static::assertFalse($rule->isValid('føó'));
+        static::assertFalse($rule->isValid(''));
 
         foreach (['yes', 'on', 1, '1', true, 'true'] as $value) {
-            $this->assertTrue($rule->isValid($value));
+            static::assertTrue($rule->isValid($value));
         }
     }
 }

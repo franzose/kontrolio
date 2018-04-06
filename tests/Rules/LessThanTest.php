@@ -9,11 +9,11 @@ class LessThanTest extends TestCase
 {
     public function testValidation()
     {
-        $this->assertFalse((new LessThan(5))->isValid(5));
-        $this->assertFalse((new LessThan(5))->isValid(10));
-        $this->assertTrue((new LessThan(5))->isValid(0));
-        $this->assertFalse((new LessThan('a'))->isValid('a'));
-        $this->assertFalse((new LessThan('a'))->isValid('f'));
-        $this->assertTrue((new LessThan('c'))->isValid('a'));
+        static::assertFalse((new LessThan(5))->isValid(5));
+        static::assertFalse((new LessThan(5))->isValid(10));
+        static::assertTrue((new LessThan(5))->isValid(0));
+        static::assertFalse((new LessThan('a'))->isValid('a'));
+        static::assertFalse((new LessThan('a'))->isValid('f'));
+        static::assertTrue((new LessThan('c'))->isValid('a'));
     }
 }

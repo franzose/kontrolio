@@ -11,11 +11,11 @@ class CommonRuleTest extends TestCase
     {
         $rule = new DummyRule;
 
-        $this->assertEquals('dummy', $rule->getName());
+        static::assertEquals('dummy', $rule->getName());
     }
     
     public function testAllowingEmptyConstructor()
     {
-        $this->assertTrue(DummyRule::allowingEmptyValue()->emptyValueAllowed());
+        static::assertTrue(DummyRule::allowingEmptyValue()->emptyValueAllowed());
     }
 }

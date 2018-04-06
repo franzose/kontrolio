@@ -9,9 +9,9 @@ class IdenticalToTest extends TestCase
 {
     public function testValidation()
     {
-        $this->assertTrue((new IdenticalTo(5))->isValid(5));
-        $this->assertFalse((new IdenticalTo(5))->isValid('5'));
-        $this->assertTrue((new IdenticalTo('a'))->isValid('a'));
-        $this->assertFalse((new IdenticalTo('a'))->isValid('b'));
+        static::assertTrue((new IdenticalTo(5))->isValid(5));
+        static::assertFalse((new IdenticalTo(5))->isValid('5'));
+        static::assertTrue((new IdenticalTo('a'))->isValid('a'));
+        static::assertFalse((new IdenticalTo('a'))->isValid('b'));
     }
 }

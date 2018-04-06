@@ -11,8 +11,8 @@ class BlankTest extends TestCase
     {
         $rule = new Blank;
 
-        $this->assertFalse($rule->isValid('foo'));
-        $this->assertTrue($rule->isValid(''));
-        $this->assertTrue($rule->isValid());
+        static::assertFalse($rule->isValid('foo'));
+        static::assertTrue($rule->isValid(''));
+        static::assertTrue($rule->isValid());
     }
 }

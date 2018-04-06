@@ -24,7 +24,7 @@ class IsInTest extends TestCase
     {
         $rule = new IsIn($haystack, $strict);
 
-        $this->assertEquals(
+        static::assertEquals(
             $expectedResult,
             $rule->isValid($input)
         );

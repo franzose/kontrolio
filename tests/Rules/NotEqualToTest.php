@@ -9,9 +9,9 @@ class NotEqualToTest extends TestCase
 {
     public function testValidation()
     {
-        $this->assertFalse((new NotEqualTo(5))->isValid(5));
-        $this->assertTrue((new NotEqualTo(5))->isValid(6));
-        $this->assertFalse((new NotEqualTo('a'))->isValid('a'));
-        $this->assertTrue((new NotEqualTo('a'))->isValid('b'));
+        static::assertFalse((new NotEqualTo(5))->isValid(5));
+        static::assertTrue((new NotEqualTo(5))->isValid(6));
+        static::assertFalse((new NotEqualTo('a'))->isValid('a'));
+        static::assertTrue((new NotEqualTo('a'))->isValid('b'));
     }
 }

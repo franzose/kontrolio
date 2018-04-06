@@ -24,9 +24,9 @@ class CallableRuleWrapperTest extends TestCase
             'skip' => true
         ]);
         
-        $this->assertEquals('foo', $rule->getName());
-        $this->assertTrue($rule->isValid());
-        $this->assertTrue($rule->emptyValueAllowed());
-        $this->assertTrue($rule->canSkipValidation());
+        static::assertEquals('foo', $rule->getName());
+        static::assertTrue($rule->isValid());
+        static::assertTrue($rule->emptyValueAllowed());
+        static::assertTrue($rule->canSkipValidation());
     }
 }

@@ -18,6 +18,6 @@ class FirstPassedTest extends TestCase
             new IsNull()
         );
 
-        $this->assertTrue($rule->isValid('foo'));
+        static::assertTrue($rule->isValid('foo'));
     }
 }

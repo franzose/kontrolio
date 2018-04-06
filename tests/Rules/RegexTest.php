@@ -19,9 +19,9 @@ class RegexTest extends TestCase
     {
         $rule = new Regex('/[a-z]{2}/');
 
-        $this->assertTrue($rule->isValid('ab'));
-        $this->assertFalse($rule->isValid(''));
-        $this->assertFalse($rule->isValid(null));
-        $this->assertFalse($rule->isValid('жз'));
+        static::assertTrue($rule->isValid('ab'));
+        static::assertFalse($rule->isValid(''));
+        static::assertFalse($rule->isValid(null));
+        static::assertFalse($rule->isValid('жз'));
     }
 }

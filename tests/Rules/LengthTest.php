@@ -25,8 +25,8 @@ class LengthTest extends TestCase
 
     public function testValidation()
     {
-        $this->assertFalse((new Length(5, 15))->isValid(''));
-        $this->assertFalse((new Length(5, 15))->isValid('test'));
-        $this->assertTrue((new Length(3, 15))->isValid('foo'));
+        static::assertFalse((new Length(5, 15))->isValid(''));
+        static::assertFalse((new Length(5, 15))->isValid('test'));
+        static::assertTrue((new Length(3, 15))->isValid('foo'));
     }
 }

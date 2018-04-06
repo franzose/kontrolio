@@ -44,9 +44,9 @@ class ValidatorTest extends TestCase
         $aliases = require __DIR__ . '/../config/aliases.php';
         $validator = (new Validator($data, $rules, $messages))->extend($aliases);
         
-        $this->assertEquals($data, $validator->getData());
-        $this->assertEquals($rules, $validator->getRules());
-        $this->assertEquals($messages, $validator->getMessages());
+        static::assertEquals($data, $validator->getData());
+        static::assertEquals($rules, $validator->getRules());
+        static::assertEquals($messages, $validator->getMessages());
     }
 
     /**
@@ -76,8 +76,8 @@ class ValidatorTest extends TestCase
         
         $validator = (new Validator($data, $rules, $messages))->extend([IsNotEmpty::class]);
 
-        $this->assertFalse($validator->validate());
-        $this->assertEquals($errors, $validator->getErrors());
+        static::assertFalse($validator->validate());
+        static::assertEquals($errors, $validator->getErrors());
     }
 
     public function testDotNotation()
@@ -89,8 +89,8 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($data, $rules, $messages);
 
-        $this->assertFalse($validator->validate());
-        $this->assertEquals($errors, $validator->getErrors());
+        static::assertFalse($validator->validate());
+        static::assertEquals($errors, $validator->getErrors());
     }
     
     public function testBasicValidation()
@@ -98,7 +98,7 @@ class ValidatorTest extends TestCase
         $data = ['name' => 'foo'];
         $rules = ['name' => new IsNotEmpty];
         
-        $this->assertTrue($this->validate($data, $rules));
+        static::assertTrue($this->validate($data, $rules));
     }
     
     public function testFalsyValidation()
@@ -111,8 +111,8 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($data, $rules, $messages);
 
-        $this->assertFalse($validator->validate());
-        $this->assertEquals($errors, $validator->getErrors());
+        static::assertFalse($validator->validate());
+        static::assertEquals($errors, $validator->getErrors());
     }
 
     public function testCallbackValidation()
@@ -129,8 +129,8 @@ class ValidatorTest extends TestCase
 
         $errors = ['foo' => ['Сообщение не должно быть пустым.']];
 
-        $this->assertFalse($validator->validate());
-        $this->assertEquals($errors, $validator->getErrors());
+        static::assertFalse($validator->validate());
+        static::assertEquals($errors, $validator->getErrors());
     }
     
     public function testSkippingValidation()
@@ -138,9 +138,9 @@ class ValidatorTest extends TestCase
         $rules = ['foo' => new SkippableRule()];
         $messages = ['foo' => 'bar'];
 
-        $this->assertFalse($this->validate(['foo' => 'bar'], $rules, $messages));
-        $this->assertTrue($this->validate(['foo' => 'foo'], $rules, $messages));
-        $this->assertTrue($this->validate(['foo' => null], ['foo' => new EmptyRule()], ['foo' => 'baz']));
+        static::assertFalse($this->validate(['foo' => 'bar'], $rules, $messages));
+        static::assertTrue($this->validate(['foo' => 'foo'], $rules, $messages));
+        static::assertTrue($this->validate(['foo' => null], ['foo' => new EmptyRule()], ['foo' => 'baz']));
     }
 
     public function testBypassingValidation()
@@ -161,7 +161,7 @@ class ValidatorTest extends TestCase
             'bar' => ''
         ];
 
-        $this->assertTrue($this->validate($data, $rules));
+        static::assertTrue($this->validate($data, $rules));
     }
 
     public function testBypassingEmpyValues()
@@ -176,14 +176,14 @@ class ValidatorTest extends TestCase
             'bar' => '12345'
         ];
 
-        $this->assertTrue($this->validate($data, $rules));
+        static::assertTrue($this->validate($data, $rules));
 
         $data = [
             'foo' => '123',
             'bar' => '12345'
         ];
 
-        $this->assertFalse($this->validate($data, $rules));
+        static::assertFalse($this->validate($data, $rules));
     }
     
     public function testStoppingOnFirstFailure()
@@ -212,12 +212,12 @@ class ValidatorTest extends TestCase
         $validator = new Validator($data, $rules, $messages);
         $validator->validate();
         
-        $this->assertCount(2, $validator->getErrors());
+        static::assertCount(2, $validator->getErrors());
 
         $validator = new Validator($data, $rules, $messages);
         $validator->shouldStopOnFirstFailure()->validate();
 
-        $this->assertCount(1, $validator->getErrors());
+        static::assertCount(1, $validator->getErrors());
     }
 
     public function testStoppingOnFirstFailureWithinRulesGroup()
@@ -255,10 +255,10 @@ class ValidatorTest extends TestCase
         $validator->validate();
         $errors = $validator->getErrors();
 
-        $this->assertCount(3, $errors);
-        $this->assertTrue(isset($errors['foo'], $errors['bar'], $errors['baz']));
-        $this->assertCount(2, $errors['foo']);
-        $this->assertCount(1, $errors['bar']);
+        static::assertCount(3, $errors);
+        static::assertTrue(isset($errors['foo'], $errors['bar'], $errors['baz']));
+        static::assertCount(2, $errors['foo']);
+        static::assertCount(1, $errors['bar']);
     }
 
     public function testGetErrorsListReturnsPlainArray()
@@ -297,8 +297,8 @@ class ValidatorTest extends TestCase
             'message 4'
         ];
 
-        $this->assertCount(4, $errors);
-        $this->assertEquals($expected, $errors);
+        static::assertCount(4, $errors);
+        static::assertEquals($expected, $errors);
     }
 
     public function testShouldReturnPlaceholdersAsDefaultErrorMessages()
@@ -329,6 +329,6 @@ class ValidatorTest extends TestCase
             'bar.foo_bar',
         ];
 
-        $this->assertEquals($expected, $validator->getErrorsList());
+        static::assertEquals($expected, $validator->getErrorsList());
     }
 }

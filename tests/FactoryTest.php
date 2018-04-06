@@ -11,7 +11,7 @@ class FactoryTest extends TestCase
     {
         $factory = new Factory();
 
-        $this->assertEquals(require __DIR__ . '/../config/aliases.php', $factory->getAvailable());
+        static::assertEquals(require __DIR__ . '/../config/aliases.php', $factory->getAvailable());
     }
     
     public function testFactory()
@@ -21,9 +21,9 @@ class FactoryTest extends TestCase
         $rules = ['foo' => function() { return true; }];
         $validator = $factory->make($data, $rules, $data);
         
-        $this->assertEquals($data, $validator->getData());
-        $this->assertEquals($rules, $validator->getRules());
-        $this->assertEquals($data, $validator->getMessages());
-        $this->assertEquals(require __DIR__ . '/../config/aliases.php', $validator->getAvailable());
+        static::assertEquals($data, $validator->getData());
+        static::assertEquals($rules, $validator->getRules());
+        static::assertEquals($data, $validator->getMessages());
+        static::assertEquals(require __DIR__ . '/../config/aliases.php', $validator->getAvailable());
     }
 }

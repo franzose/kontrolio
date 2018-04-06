@@ -11,8 +11,8 @@ class NotNullTest extends TestCase
     {
         $rule = new NotNull;
 
-        $this->assertTrue($rule->isValid('foo'));
-        $this->assertTrue($rule->isValid(''));
-        $this->assertFalse($rule->isValid());
+        static::assertTrue($rule->isValid('foo'));
+        static::assertTrue($rule->isValid(''));
+        static::assertFalse($rule->isValid());
     }
 }

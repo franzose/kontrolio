@@ -18,7 +18,7 @@ class DateTest extends TestCase
     {
         $rule = new Date;
 
-        $this->assertTrue($rule->isValid('2016-06-06'));
+        static::assertTrue($rule->isValid('2016-06-06'));
     }
 
     public function testViolations()
@@ -29,7 +29,7 @@ class DateTest extends TestCase
         $two = new Date;
         $two->isValid('0000-00-00');
 
-        $this->assertEquals(['format'], $one->getViolations());
-        $this->assertEquals(['date'], $two->getViolations());
+        static::assertEquals(['format'], $one->getViolations());
+        static::assertEquals(['date'], $two->getViolations());
     }
 }

@@ -11,8 +11,8 @@ class NotBlankTest extends TestCase
     {
         $rule = new NotBlank;
 
-        $this->assertTrue($rule->isValid('foo'));
-        $this->assertFalse($rule->isValid(''));
-        $this->assertFalse($rule->isValid());
+        static::assertTrue($rule->isValid('foo'));
+        static::assertFalse($rule->isValid(''));
+        static::assertFalse($rule->isValid());
     }
 }

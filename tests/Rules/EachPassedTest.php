@@ -16,8 +16,8 @@ class EachPassedTest extends TestCase
             new Length(5, 17)
         );
 
-        $this->assertFalse($rule->isValid('foo'));
-        $this->assertFalse($rule->isValid('example@example.com'));
-        $this->assertTrue($rule->isValid('admin@example.com'));
+        static::assertFalse($rule->isValid('foo'));
+        static::assertFalse($rule->isValid('example@example.com'));
+        static::assertTrue($rule->isValid('admin@example.com'));
     }
 }
