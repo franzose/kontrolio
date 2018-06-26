@@ -52,7 +52,11 @@ class Length extends AbstractRule
             throw new InvalidArgumentException('Either option "min" or "max" must be given.');
         }
 
-        if ($max < $min) {
+        if ($min !== null && $min > $max) {
+            throw new LogicException('"Min" option cannot be greater that "max".');
+        }
+
+        if ($max !== null && $max < $min) {
             throw new LogicException('"Max" option cannot be less that "min".');
         }
 
