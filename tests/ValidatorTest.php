@@ -9,6 +9,7 @@ use Kontrolio\Tests\TestHelpers\IsNotEmpty;
 use Kontrolio\Tests\TestHelpers\EmptyRule;
 use Kontrolio\Tests\TestHelpers\FooBarRule;
 use Kontrolio\Tests\TestHelpers\SkippableRule;
+use Kontrolio\Tests\TestHelpers\StoppingRule;
 use Kontrolio\Validator;
 use PHPUnit\Framework\TestCase;
 
@@ -327,6 +328,33 @@ class ValidatorTest extends TestCase
             'foo.foo_bar',
             'bar.is_not_empty',
             'bar.foo_bar',
+        ];
+
+        static::assertEquals($expected, $validator->getErrorsList());
+    }
+
+    public function testStopsFurtherValidation()
+    {
+        $data = [
+            'foo' => null,
+            'bar' => null
+        ];
+
+        $rules = [
+            'foo' => [
+                new StoppingRule()
+            ],
+            'bar' => [
+                new IsNotEmpty,
+                new FooBarRule
+            ]
+        ];
+
+        $validator = new Validator($data, $rules);
+        $validator->validate();
+
+        $expected = [
+            'foo.stopping'
         ];
 
         static::assertEquals($expected, $validator->getErrorsList());

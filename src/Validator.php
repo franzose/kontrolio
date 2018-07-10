@@ -4,6 +4,7 @@ namespace Kontrolio;
 
 use Kontrolio\Rules\Core\Sometimes;
 use Kontrolio\Rules\Core\UntilFirstFailure;
+use Kontrolio\Rules\StopsFurtherValidationInterface;
 use OutOfBoundsException;
 use ReflectionClass;
 use Kontrolio\Rules\CallableRuleWrapper;
@@ -71,7 +72,7 @@ class Validator implements ValidatorInterface
      *
      * @var bool
      */
-    protected $shouldStop = false;
+    protected $shouldStopOnFirstFailure = false;
 
     /**
      * Flag indication that the validation of the current attribute should stop.
@@ -401,13 +402,16 @@ class Validator implements ValidatorInterface
                     $this->shouldStopWithinAttribute = true;
                 }
 
-                $this->handle($attribute, $rule);
+                $value = $this->getValue($attribute);
+                $rule = $this->resolveRule($rule, $value);
+
+                $this->handle($rule, $attribute, $value);
 
                 if ($this->shouldProceedToTheNextAttribute($attribute)) {
                     continue 2;
                 }
                 
-                if ($this->shouldStopOnFailure($attribute)) {
+                if ($this->shouldStopOnFailure($rule, $attribute)) {
                     return false;
                 }
             }
@@ -419,24 +423,22 @@ class Validator implements ValidatorInterface
     /**
      * Processes a data attribute and creates new validation error message if the validation failed.
      *
-     * @param string $attribute
      * @param mixed $rule
+     * @param string $attribute
+     * @param mixed $value
      * @throws UnexpectedValueException
      */
-    protected function handle($attribute, $rule)
+    protected function handle($rule, $attribute, $value)
     {
-        $value = $this->getValue($attribute);
-        $rule = $this->resolveRule($rule, $value);
-
         if ($rule instanceof Sometimes && $this->valueIsEmpty($value)) {
             $this->bypass = true;
 
             return;
         }
 
-        if ($rule->canSkipValidation($value) ||
-            ($rule->emptyValueAllowed() && $this->valueIsEmpty($value)) ||
-            $rule->isValid($value)) {
+        if ($rule->isValid($value) ||
+            $rule->canSkipValidation($value) ||
+            ($rule->emptyValueAllowed() && $this->valueIsEmpty($value))) {
             return;
         }
 
@@ -632,12 +634,15 @@ class Validator implements ValidatorInterface
      * Determines whether validation should stop on the first failure.
      *
      * @param string $attribute
+     * @param RuleInterface $rule
      *
      * @return bool
      */
-    protected function shouldStopOnFailure($attribute)
+    protected function shouldStopOnFailure(RuleInterface $rule, $attribute)
     {
-        return ($this->shouldStop || $this->shouldStopWithinAttribute)
+        return ($rule instanceof StopsFurtherValidationInterface ||
+                $this->shouldStopOnFirstFailure ||
+                $this->shouldStopWithinAttribute)
                && array_key_exists($attribute, $this->errors);
     }
 
@@ -712,7 +717,7 @@ class Validator implements ValidatorInterface
      */
     public function shouldStopOnFirstFailure($stop = true)
     {
-        $this->shouldStop = $stop;
+        $this->shouldStopOnFirstFailure = $stop;
 
         return $this;
     }
