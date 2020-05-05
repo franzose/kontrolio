@@ -2,6 +2,9 @@
 
 namespace Kontrolio\Data;
 
+use Kontrolio\Rules\Core\Sometimes;
+use Kontrolio\Rules\RuleInterface;
+
 final class Attribute
 {
     private $value;
@@ -25,6 +28,18 @@ final class Attribute
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function canSkip(RuleInterface $rule)
+    {
+        return $rule instanceof Sometimes && $this->isEmpty();
+    }
+
+    public function conformsTo(RuleInterface $rule)
+    {
+        return $rule->isValid($this->value) ||
+               $rule->canSkipValidation($this->value) ||
+               ($rule->emptyValueAllowed() && $this->isEmpty());
     }
 
     public function isEmpty()

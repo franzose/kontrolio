@@ -2,10 +2,8 @@
 
 namespace Kontrolio;
 
-use Kontrolio\Data\Attribute;
 use Kontrolio\Data\Data;
 use Kontrolio\Error\Errors;
-use Kontrolio\Rules\Core\Sometimes;
 use Kontrolio\Rules\Core\UntilFirstFailure;
 use Kontrolio\Rules\ArrayNormalizer;
 use Kontrolio\Rules\Instantiator;
@@ -13,7 +11,6 @@ use Kontrolio\Rules\StopsFurtherValidationInterface;
 use Kontrolio\Rules\Parser;
 use Kontrolio\Rules\Repository;
 use Kontrolio\Rules\CallableRuleWrapper;
-use Kontrolio\Rules\RuleInterface;
 use UnexpectedValueException;
 
 /**
@@ -78,20 +75,6 @@ class Validator implements ValidatorInterface
      * @var bool
      */
     private $shouldStopOnFirstFailure = false;
-
-    /**
-     * Flag indication that the validation of the current attribute should stop.
-     *
-     * @var bool
-     */
-    private $shouldStopWithinAttribute = false;
-
-    /**
-     * Flag indicating that the validation can be bypassed.
-     *
-     * @var bool
-     */
-    private $bypass = false;
 
     /**
      * Validator constructor.
@@ -222,107 +205,34 @@ class Validator implements ValidatorInterface
         }
 
         foreach ($this->normalizedRules as $attrName => $rules) {
-            $this->bypass = false;
-            $this->shouldStopWithinAttribute = false;
-
             foreach ($rules as $rule) {
-                if ($rule instanceof UntilFirstFailure) {
-                    $this->shouldStopWithinAttribute = true;
-                }
-
                 $attribute = $this->data->get($attrName);
-                $rule = $this->resolveRule($rule, $attribute);
+                $rule = is_callable($rule)
+                    ? new CallableRuleWrapper($rule($attribute->getValue()))
+                    : $rule;
 
-                $this->handle($rule, $attribute);
-
-                if ($this->shouldProceedToTheNextAttribute($attrName)) {
+                if ($attribute->canSkip($rule)) {
                     continue 2;
                 }
-                
-                if ($this->shouldStopOnFailure($rule, $attrName)) {
+
+                if ($attribute->conformsTo($rule)) {
+                    continue;
+                }
+
+                $this->errors->add($attribute, $rule);
+
+                if ($rule instanceof UntilFirstFailure) {
+                    continue 2;
+                }
+
+                if ($rule instanceof StopsFurtherValidationInterface ||
+                    $this->shouldStopOnFirstFailure) {
                     return false;
                 }
             }
         }
         
         return $this->errors->isEmpty();
-    }
-
-    /**
-     * Processes a data attribute and creates new validation error message if the validation failed.
-     *
-     * @param RuleInterface $rule
-     * @param Attribute $attribute
-     * @throws UnexpectedValueException
-     */
-    private function handle($rule, Attribute $attribute)
-    {
-        if ($rule instanceof Sometimes && $attribute->isEmpty()) {
-            $this->bypass = true;
-
-            return;
-        }
-
-        $raw = $attribute->getValue();
-
-        if ($rule->isValid($raw) ||
-            $rule->canSkipValidation($raw) ||
-            ($rule->emptyValueAllowed() && $attribute->isEmpty())) {
-            return;
-        }
-
-        $this->errors->add($attribute, $rule);
-    }
-
-    /**
-     * Resolves validation rule according to actual rule type.
-     *
-     * @param callable|RuleInterface $rule
-     * @param mixed $value
-     *
-     * @return RuleInterface
-     * @throws UnexpectedValueException
-     */
-    private function resolveRule($rule, Attribute $value)
-    {
-        if ($rule instanceof RuleInterface) {
-            return $rule;
-        }
-        
-        if (is_callable($rule)) {
-            return new CallableRuleWrapper($rule($value->getValue()));
-        }
-
-        throw new UnexpectedValueException(sprintf('Rule must implement `%s` or be callable.', RuleInterface::class));
-    }
-
-    /**
-     * Determines whether validation should stop on the first failure.
-     *
-     * @param string $attribute
-     * @param RuleInterface $rule
-     *
-     * @return bool
-     */
-    private function shouldStopOnFailure(RuleInterface $rule, $attribute)
-    {
-        return (
-            $rule instanceof StopsFurtherValidationInterface ||
-            $this->shouldStopOnFirstFailure ||
-            $this->shouldStopWithinAttribute
-        ) && $this->errors->has($attribute);
-    }
-
-    /**
-     * Determines whether validator should proceed to the next attribute
-     *
-     * @param string $attribute
-     *
-     * @return bool
-     */
-    private function shouldProceedToTheNextAttribute($attribute)
-    {
-        return $this->bypass || ($this->shouldStopWithinAttribute && $this->errors->has($attribute));
     }
 
     /**
