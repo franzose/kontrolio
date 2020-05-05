@@ -51,7 +51,18 @@ class Validator implements ValidatorInterface
      */
     private $messages;
 
+    /**
+     * Available validation rules.
+     *
+     * @var Repository
+     */
     private $repository;
+
+    /**
+     * Raw rules normalizer.
+     *
+     * @var ArrayNormalizer
+     */
     private $normalizer;
 
     /**
