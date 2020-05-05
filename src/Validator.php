@@ -2,11 +2,16 @@
 
 namespace Kontrolio;
 
+use Kontrolio\Data\Attribute;
+use Kontrolio\Data\Data;
+use Kontrolio\Error\Errors;
 use Kontrolio\Rules\Core\Sometimes;
 use Kontrolio\Rules\Core\UntilFirstFailure;
+use Kontrolio\Rules\ArrayNormalizer;
+use Kontrolio\Rules\Instantiator;
 use Kontrolio\Rules\StopsFurtherValidationInterface;
-use OutOfBoundsException;
-use ReflectionClass;
+use Kontrolio\Rules\Parser;
+use Kontrolio\Rules\Repository;
 use Kontrolio\Rules\CallableRuleWrapper;
 use Kontrolio\Rules\RuleInterface;
 use UnexpectedValueException;
@@ -19,25 +24,11 @@ use UnexpectedValueException;
 class Validator implements ValidatorInterface
 {
     /**
-     * Parsed and cached rules.
-     *
-     * @var array
-     */
-    protected static $rulesCache = [];
-
-    /**
-     * List of all available validation rules.
-     *
-     * @var array
-     */
-    protected $available = [];
-    
-    /**
      * Data to validate.
      *
-     * @var array
+     * @var Data
      */
-    protected $data = [];
+    protected $data;
     
     /**
      * Raw validation rules.
@@ -51,7 +42,7 @@ class Validator implements ValidatorInterface
      *
      * @var array
      */
-    protected $formattedRules = [];
+    protected $normalizedRules = [];
 
     /**
      * Validation messages.
@@ -60,12 +51,15 @@ class Validator implements ValidatorInterface
      */
     protected $messages = [];
 
+    private $repository;
+    private $normalizer;
+
     /**
      * Validation errors.
      *
-     * @var array
+     * @var Errors
      */
-    protected $errors = [];
+    protected $errors;
 
     /**
      * Flag indicating that the validation should stop.
@@ -97,9 +91,13 @@ class Validator implements ValidatorInterface
      */
     public function __construct(array $data, array $rules, array $messages = [])
     {
-        $this->data = $data;
+        $this->data = new Data($data);
         $this->rules = $rules;
         $this->messages = $messages;
+        $instantiator = new Instantiator();
+        $this->repository = new Repository($instantiator);
+        $this->normalizer = new ArrayNormalizer(new Parser($this->repository));
+        $this->errors = new Errors($messages);
     }
 
     /**
@@ -111,42 +109,9 @@ class Validator implements ValidatorInterface
      */
     public function extend(array $rules)
     {
-        $keys = array_map(function ($key) use ($rules) {
-            if (is_int($key)) {
-                return static::getRuleInstance($rules[$key])->getName();
-            }
-
-            return $key;
-        }, array_keys($rules));
-
-        $mapped = array_combine($keys, array_values($rules));
-
-        $this->available = array_merge($this->available, $mapped);
+        $this->repository->add($rules);
 
         return $this;
-    }
-
-    /**
-     * Returns new instance of a rule by the given class name.
-     *
-     * @param string $class
-     *
-     * @return RuleInterface
-     * @throws UnexpectedValueException
-     */
-    private static function getRuleInstance($class)
-    {
-        $class = (new ReflectionClass($class));
-
-        if (!$class->isInstantiable()) {
-            throw new UnexpectedValueException('Rule class must be instantiable.');
-        }
-
-        if (!$class->implementsInterface(RuleInterface::class)) {
-            throw new UnexpectedValueException(sprintf('Rule must implement %s.', RuleInterface::class));
-        }
-
-        return $class->newInstance();
     }
 
     /**
@@ -156,7 +121,7 @@ class Validator implements ValidatorInterface
      */
     public function getAvailable()
     {
-        return $this->available;
+        return $this->repository->all();
     }
 
     /**
@@ -166,7 +131,7 @@ class Validator implements ValidatorInterface
      */
     public function getData()
     {
-        return $this->data;
+        return $this->data->raw();
     }
 
     /**
@@ -178,7 +143,7 @@ class Validator implements ValidatorInterface
      */
     public function setData(array $data)
     {
-        $this->data = $data;
+        $this->data = new Data($data);
 
         return $this;
     }
@@ -199,162 +164,14 @@ class Validator implements ValidatorInterface
      * @param array $rules
      *
      * @return $this
-     * @throws OutOfBoundsException
      * @throws UnexpectedValueException
      */
     public function setRules(array $rules)
     {
         $this->rules = $rules;
-        $this->formatRules($rules);
+        $this->normalizedRules = $this->normalizer->normalize($rules);
 
         return $this;
-    }
-
-    /**
-     * Format rules and check proper types.
-     *
-     * @param array $all
-     * @throws UnexpectedValueException
-     */
-    private function formatRules(array $all)
-    {
-        $attributes = array_keys($all);
-        $rules = array_map(function ($attribute) use ($all) {
-            $resolved = $this->resolveRules($all[$attribute]);
-
-            if (!is_array($resolved)) {
-                return [$resolved];
-            }
-
-            return $resolved;
-        }, $attributes);
-
-        $this->formattedRules = array_combine($attributes, $rules);
-    }
-
-    /**
-     * Resolves rules from different formats.
-     *
-     * @param mixed $rules
-     *
-     * @return array
-     */
-    private function resolveRules($rules)
-    {
-        if (is_array($rules)) {
-            foreach ($rules as $rule) {
-                static::checkRuleType($rule);
-            }
-
-            return $rules;
-        }
-
-        if (is_string($rules)) {
-            return $this->parseRulesFromString($rules);
-        }
-
-        static::checkRuleType($rules);
-
-        return $rules;
-    }
-
-    /**
-     * Parses string to an array of rules.
-     *
-     * @param string $string
-     * @return array
-     * @throws UnexpectedValueException
-     */
-    protected function parseRulesFromString($string)
-    {
-        if (isset(static::$rulesCache[$string])) {
-            return static::$rulesCache[$string];
-        }
-
-        $set = explode('|', $string);
-        $rules = [];
-
-        foreach ($set as $rule) {
-            list($name, $arguments) = $this->getNameAndArgumentsFromString($rule);
-
-            $rules[] = $this->buildRule($name, $arguments);
-        }
-
-        return static::$rulesCache[$string] = $rules;
-    }
-
-    /**
-     * Takes rule identifier and arguments from the string.
-     *
-     * @param string $rule
-     *
-     * @return array
-     */
-    private function getNameAndArgumentsFromString($rule)
-    {
-        $delimpos = strpos($rule, ':');
-
-        if ($delimpos) {
-            $name = substr($rule, 0, $delimpos);
-            $arguments = (array) explode(',', substr($rule, $delimpos+1));
-        } else {
-            $name = $rule;
-            $arguments = [];
-        }
-
-        return [$name, $arguments];
-    }
-
-    /**
-     * Builds a new rule object from the given identifier and constructor arguments.
-     *
-     * @param string $name
-     * @param array $arguments
-     *
-     * @return object
-     */
-    private function buildRule($name, array $arguments = [])
-    {
-        $class = $this->getRuleClassName($name);
-
-        return (new ReflectionClass($class))->newInstanceArgs($arguments);
-    }
-
-    /**
-     * Resolves a rule class name by the identifier.
-     *
-     * @param string $identifier
-     *
-     * @return string
-     * @throws UnexpectedValueException
-     */
-    private function getRuleClassName($identifier)
-    {
-        if (array_key_exists($identifier, $this->available)) {
-            return $this->available[$identifier];
-        }
-
-        throw new UnexpectedValueException(
-            sprintf(
-                'Rule identified by `%s` could not be loaded.',
-                $identifier
-            )
-        );
-    }
-
-    /**
-     * Check rule for the proper type.
-     *
-     * @param mixed $rule
-     * @throws UnexpectedValueException
-     */
-    private static function checkRuleType($rule)
-    {
-        if (!$rule instanceof RuleInterface && !is_callable($rule)) {
-            throw new UnexpectedValueException(
-                sprintf('Rule must implement `%s` or be callable.', RuleInterface::class)
-            );
-        }
     }
 
     /**
@@ -389,11 +206,11 @@ class Validator implements ValidatorInterface
      */
     public function validate()
     {
-        if (empty($this->formattedRules)) {
-            $this->formatRules($this->rules);
+        if (empty($this->normalizedRules)) {
+            $this->normalizedRules = $this->normalizer->normalize($this->rules);
         }
 
-        foreach ($this->formattedRules as $attribute => $rules) {
+        foreach ($this->normalizedRules as $attrName => $rules) {
             $this->bypass = false;
             $this->shouldStopWithinAttribute = false;
 
@@ -402,90 +219,48 @@ class Validator implements ValidatorInterface
                     $this->shouldStopWithinAttribute = true;
                 }
 
-                $value = $this->getValue($attribute);
-                $rule = $this->resolveRule($rule, $value);
+                $attribute = $this->data->get($attrName);
+                $rule = $this->resolveRule($rule, $attribute);
 
-                $this->handle($rule, $attribute, $value);
+                $this->handle($rule, $attribute);
 
-                if ($this->shouldProceedToTheNextAttribute($attribute)) {
+                if ($this->shouldProceedToTheNextAttribute($attrName)) {
                     continue 2;
                 }
                 
-                if ($this->shouldStopOnFailure($rule, $attribute)) {
+                if ($this->shouldStopOnFailure($rule, $attrName)) {
                     return false;
                 }
             }
         }
         
-        return !count($this->errors);
+        return $this->errors->isEmpty();
     }
 
     /**
      * Processes a data attribute and creates new validation error message if the validation failed.
      *
-     * @param mixed $rule
-     * @param string $attribute
-     * @param mixed $value
+     * @param RuleInterface $rule
+     * @param Attribute $attribute
      * @throws UnexpectedValueException
      */
-    protected function handle($rule, $attribute, $value)
+    protected function handle($rule, Attribute $attribute)
     {
-        if ($rule instanceof Sometimes && $this->valueIsEmpty($value)) {
+        if ($rule instanceof Sometimes && $attribute->isEmpty()) {
             $this->bypass = true;
 
             return;
         }
 
-        if ($rule->isValid($value) ||
-            $rule->canSkipValidation($value) ||
-            ($rule->emptyValueAllowed() && $this->valueIsEmpty($value))) {
+        $raw = $attribute->getValue();
+
+        if ($rule->isValid($raw) ||
+            $rule->canSkipValidation($raw) ||
+            ($rule->emptyValueAllowed() && $attribute->isEmpty())) {
             return;
         }
 
-        $this->addError($attribute, $rule);
-    }
-
-    /**
-     * Returns value of an attribute.
-     *
-     * @param string $attribute
-     *
-     * @return mixed
-     */
-    protected function getValue($attribute)
-    {
-        if ($attribute === null) {
-            return null;
-        }
-
-        if (isset($this->data[$attribute])) {
-            return $this->data[$attribute];
-        }
-
-        $segments = explode('.', $attribute);
-        $data = null;
-
-        foreach ($segments as $segment) {
-            if (!array_key_exists($segment, $this->data)) {
-                return null;
-            }
-
-            $data = $this->data[$segment];
-        }
-
-        return $data;
-    }
-
-    /**
-     * Checks whether value is empty.
-     *
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function valueIsEmpty($value)
-    {
-        return $value === null || $value === '';
+        $this->errors->add($attribute, $rule);
     }
 
     /**
@@ -497,137 +272,17 @@ class Validator implements ValidatorInterface
      * @return RuleInterface
      * @throws UnexpectedValueException
      */
-    protected function resolveRule($rule, $value)
+    protected function resolveRule($rule, Attribute $value)
     {
         if ($rule instanceof RuleInterface) {
             return $rule;
         }
         
         if (is_callable($rule)) {
-            return new CallableRuleWrapper($rule($value));
+            return new CallableRuleWrapper($rule($value->getValue()));
         }
 
         throw new UnexpectedValueException(sprintf('Rule must implement `%s` or be callable.', RuleInterface::class));
-    }
-
-    /**
-     * Creates new validation error message.
-     *
-     * @param string $attribute
-     * @param RuleInterface $rule
-     */
-    protected function addError($attribute, RuleInterface $rule)
-    {
-        $key = $this->prepareRuleKey($attribute, $rule);
-        $errors = $this->prepareErrors($attribute, $key, $rule);
-
-        if (isset($this->errors[$attribute])) {
-            $this->errors[$attribute] = array_merge($this->errors[$attribute], $errors);
-        } else {
-            $this->errors[$attribute] = $errors;
-        }
-    }
-
-    /**
-     * Prepares rule key for the validation error messages array.
-     *
-     * @param string $attribute
-     * @param RuleInterface $rule
-     *
-     * @return string
-     */
-    protected function prepareRuleKey($attribute, RuleInterface $rule)
-    {
-        foreach ($this->available as $identifier => $item) {
-            if ($item === $rule) {
-                return $identifier;
-            }
-        }
-
-        $name = $rule->getName();
-
-        if ($name) {
-            return $name;
-        }
-
-        if (isset($this->errors[$attribute])) {
-            return count($this->errors[$attribute]);
-        }
-
-        return 0;
-    }
-
-    /**
-     * Prepares validation error messages to proper format.
-     *
-     * @param string $attribute
-     * @param string $ruleName
-     * @param RuleInterface $rule
-     *
-     * @return array
-     */
-    protected function prepareErrors($attribute, $ruleName, RuleInterface $rule)
-    {
-        $prefix = $attribute . '.' . $ruleName;
-        $messages = $this->getMessagesByAttributeAndRuleName($attribute, $ruleName);
-        $violations = $rule->getViolations();
-
-        if (!count($violations)) {
-            return [reset($messages)];
-        }
-
-        return $this->getMessagesForViolations($messages, $violations, $prefix);
-    }
-
-    /**
-     * Filter all given messages by the attribute and the rule name.
-     *
-     * @param string $attribute
-     * @param string $ruleName
-     *
-     * @return array
-     */
-    private function getMessagesByAttributeAndRuleName($attribute, $ruleName)
-    {
-        $prefix = $attribute . '.' . $ruleName;
-        $messages = array_filter($this->messages, function ($key) use ($attribute, $prefix) {
-            return $key === $attribute || strpos($key, $prefix) === 0;
-        }, ARRAY_FILTER_USE_KEY);
-
-        if (empty($messages)) {
-            $messages = [$prefix];
-        }
-
-        return $messages;
-    }
-
-    /**
-     * Returns messages for all validation rule violations.
-     *
-     * @param array $messages
-     * @param array $violations
-     * @param string $prefix
-     *
-     * @return array
-     */
-    private function getMessagesForViolations(array $messages, array $violations, $prefix)
-    {
-        $result = [];
-
-        foreach ($violations as $violation) {
-            $keys = [
-                $prefix,
-                $prefix . '.' . $violation
-            ];
-
-            foreach ($keys as $key) {
-                if (array_key_exists($key, $messages)) {
-                    $result[] = $messages[$key];
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -640,10 +295,11 @@ class Validator implements ValidatorInterface
      */
     protected function shouldStopOnFailure(RuleInterface $rule, $attribute)
     {
-        return ($rule instanceof StopsFurtherValidationInterface ||
-                $this->shouldStopOnFirstFailure ||
-                $this->shouldStopWithinAttribute)
-               && array_key_exists($attribute, $this->errors);
+        return (
+            $rule instanceof StopsFurtherValidationInterface ||
+            $this->shouldStopOnFirstFailure ||
+            $this->shouldStopWithinAttribute
+        ) && $this->errors->has($attribute);
     }
 
     /**
@@ -655,19 +311,7 @@ class Validator implements ValidatorInterface
      */
     protected function shouldProceedToTheNextAttribute($attribute)
     {
-        return $this->bypass || ($this->shouldStopWithinAttribute && $this->attributeHasErrors($attribute));
-    }
-
-    /**
-     * Checks whether an attribute already has errors
-     *
-     * @param string $attribute
-     *
-     * @return bool
-     */
-    protected function attributeHasErrors($attribute)
-    {
-        return !empty($this->errors[$attribute]);
+        return $this->bypass || ($this->shouldStopWithinAttribute && $this->errors->has($attribute));
     }
 
     /**
@@ -677,7 +321,7 @@ class Validator implements ValidatorInterface
      */
     public function hasErrors()
     {
-        return count($this->errors) > 0;
+        return !$this->errors->isEmpty();
     }
 
     /**
@@ -687,7 +331,7 @@ class Validator implements ValidatorInterface
      */
     public function getErrors()
     {
-        return $this->errors;
+        return $this->errors->raw();
     }
 
     /**
@@ -697,15 +341,7 @@ class Validator implements ValidatorInterface
      */
     public function getErrorsList()
     {
-        $list = [];
-
-        foreach ($this->errors as $messages) {
-            foreach ($messages as $message) {
-                $list[] = $message;
-            }
-        }
-
-        return $list;
+        return $this->errors->flatten();
     }
 
     /**
