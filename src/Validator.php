@@ -208,7 +208,7 @@ class Validator implements ValidatorInterface
             foreach ($rules as $rule) {
                 $attribute = $this->data->get($attrName);
                 $rule = is_callable($rule)
-                    ? new CallableRuleWrapper($rule($attribute->getValue()))
+                    ? new CallableRuleWrapper($rule, $attribute->getValue())
                     : $rule;
 
                 if ($attribute->canSkip($rule)) {

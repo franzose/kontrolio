@@ -12,6 +12,20 @@ use UnexpectedValueException;
 class CallableRuleWrapper extends AbstractRule
 {
     /**
+     * Original rule.
+     *
+     * @var callable
+     */
+    private $rule;
+
+    /**
+     * Value that must be validated.
+     *
+     * @var mixed
+     */
+    private $value;
+
+    /**
      * Validation rule identifier.
      *
      * @var string
@@ -35,23 +49,26 @@ class CallableRuleWrapper extends AbstractRule
     /**
      * Validation rule constructor.
      *
-     * @param bool|array $result Result returned by a callback validation rule
-     * @throws UnexpectedValueException
+     * @param callable|array $rule
+     * @param mixed $value
      */
-    public function __construct($result)
+    public function __construct($rule, $value = null)
     {
-        is_bool($result) ? $this->setDefaults($result)
-                         : $this->setDefaultsFromArray($result);
+        is_array($rule)
+            ? $this->setDefaultsFromArray($rule)
+            : $this->setDefaults($rule, $value);
     }
 
     /**
      * Sets default values for wrapper's properties.
      *
-     * @param bool $result
+     * @param callable $rule
+     * @param mixed $value
      */
-    private function setDefaults($result)
+    private function setDefaults(callable $rule, $value)
     {
-        $this->valid = $result;
+        $this->rule = $rule;
+        $this->value = $value;
         $this->emptyAllowed = false;
         $this->skip = false;
     }
@@ -104,7 +121,9 @@ class CallableRuleWrapper extends AbstractRule
      */
     public function isValid($input = null)
     {
-        return $this->valid;
+        $rule = $this->rule;
+
+        return is_callable($rule) ? $rule($this->value) : $this->valid;
     }
 
     /**
