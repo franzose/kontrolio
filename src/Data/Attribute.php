@@ -5,6 +5,9 @@ namespace Kontrolio\Data;
 use Kontrolio\Rules\Core\Sometimes;
 use Kontrolio\Rules\RuleInterface;
 
+/**
+ * Validated attribute.
+ */
 final class Attribute
 {
     private $value;
@@ -30,11 +33,25 @@ final class Attribute
         return $this->value;
     }
 
+    /**
+     * Indicates whether the attribute can skip validation by the given rule.
+     *
+     * @param RuleInterface $rule
+     *
+     * @return bool
+     */
     public function canSkip(RuleInterface $rule)
     {
         return $rule instanceof Sometimes && $this->isEmpty();
     }
 
+    /**
+     * Indicates whether the attribute is valid according to the given rule.
+     *
+     * @param RuleInterface $rule
+     *
+     * @return bool
+     */
     public function conformsTo(RuleInterface $rule)
     {
         return $rule->isValid($this->value) ||

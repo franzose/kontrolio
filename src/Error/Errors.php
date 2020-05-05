@@ -6,6 +6,9 @@ use Countable;
 use Kontrolio\Data\Attribute;
 use Kontrolio\Rules\RuleInterface;
 
+/**
+ * Validation errors.
+ */
 final class Errors implements Countable
 {
     private $messages;
@@ -21,6 +24,11 @@ final class Errors implements Countable
         return $this->errors;
     }
 
+    /**
+     * Returns a flattened list of validation errors.
+     *
+     * @return array
+     */
     public function flatten()
     {
         $list = [];
@@ -56,6 +64,12 @@ final class Errors implements Countable
         return $this->count() === 0;
     }
 
+    /**
+     * Adds a new validation error for the given attribute and rule.
+     *
+     * @param Attribute $attribute
+     * @param RuleInterface $rule
+     */
     public function add(Attribute $attribute, RuleInterface $rule)
     {
         $name = $attribute->getName();

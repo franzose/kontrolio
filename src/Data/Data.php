@@ -2,6 +2,9 @@
 
 namespace Kontrolio\Data;
 
+/**
+ * Validated data.
+ */
 final class Data
 {
     private $data;
@@ -17,6 +20,8 @@ final class Data
     }
 
     /**
+     * Returns an object representation of the given attribute.
+     *
      * @param string $attribute
      *
      * @return Attribute
