@@ -45,7 +45,7 @@ final class ArrayNormalizer
      *
      * @param array $raw
      *
-     * @return RuleInterface[]|callable[]
+     * @return RuleInterface[][]|callable[][]
      * @throws UnexpectedValueException
      */
     public function normalize(array $raw)
