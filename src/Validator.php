@@ -28,28 +28,28 @@ class Validator implements ValidatorInterface
      *
      * @var Data
      */
-    protected $data;
+    private $data;
     
     /**
      * Raw validation rules.
      *
      * @var array
      */
-    protected $rules = [];
+    private $rules;
 
     /**
      * Formatted validation rules.
      *
      * @var array
      */
-    protected $normalizedRules = [];
+    private $normalizedRules = [];
 
     /**
      * Validation messages.
      *
      * @var array
      */
-    protected $messages = [];
+    private $messages;
 
     private $repository;
     private $normalizer;
@@ -59,21 +59,21 @@ class Validator implements ValidatorInterface
      *
      * @var Errors
      */
-    protected $errors;
+    private $errors;
 
     /**
      * Flag indicating that the validation should stop.
      *
      * @var bool
      */
-    protected $shouldStopOnFirstFailure = false;
+    private $shouldStopOnFirstFailure = false;
 
     /**
      * Flag indication that the validation of the current attribute should stop.
      *
      * @var bool
      */
-    protected $shouldStopWithinAttribute = false;
+    private $shouldStopWithinAttribute = false;
 
     /**
      * Flag indicating that the validation can be bypassed.
@@ -244,7 +244,7 @@ class Validator implements ValidatorInterface
      * @param Attribute $attribute
      * @throws UnexpectedValueException
      */
-    protected function handle($rule, Attribute $attribute)
+    private function handle($rule, Attribute $attribute)
     {
         if ($rule instanceof Sometimes && $attribute->isEmpty()) {
             $this->bypass = true;
@@ -272,7 +272,7 @@ class Validator implements ValidatorInterface
      * @return RuleInterface
      * @throws UnexpectedValueException
      */
-    protected function resolveRule($rule, Attribute $value)
+    private function resolveRule($rule, Attribute $value)
     {
         if ($rule instanceof RuleInterface) {
             return $rule;
@@ -293,7 +293,7 @@ class Validator implements ValidatorInterface
      *
      * @return bool
      */
-    protected function shouldStopOnFailure(RuleInterface $rule, $attribute)
+    private function shouldStopOnFailure(RuleInterface $rule, $attribute)
     {
         return (
             $rule instanceof StopsFurtherValidationInterface ||
@@ -309,7 +309,7 @@ class Validator implements ValidatorInterface
      *
      * @return bool
      */
-    protected function shouldProceedToTheNextAttribute($attribute)
+    private function shouldProceedToTheNextAttribute($attribute)
     {
         return $this->bypass || ($this->shouldStopWithinAttribute && $this->errors->has($attribute));
     }
