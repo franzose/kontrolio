@@ -204,12 +204,18 @@ class Validator implements ValidatorInterface
             $this->normalizedRules = $this->normalizer->normalize($this->rules);
         }
 
+        $untilFirstFailure = false;
+
         foreach ($this->normalizedRules as $attrName => $rules) {
             foreach ($rules as $rule) {
                 $attribute = $this->data->get($attrName);
                 $rule = is_callable($rule)
                     ? new CallableRuleWrapper($rule, $attribute->getValue())
                     : $rule;
+
+                if ($rule instanceof UntilFirstFailure) {
+                    $untilFirstFailure = true;
+                }
 
                 if ($attribute->canSkip($rule)) {
                     continue 2;
@@ -221,13 +227,13 @@ class Validator implements ValidatorInterface
 
                 $this->errors->add($attribute, $rule);
 
-                if ($rule instanceof UntilFirstFailure) {
-                    continue 2;
-                }
-
                 if ($rule instanceof StopsFurtherValidationInterface ||
                     $this->shouldStopOnFirstFailure) {
                     return false;
+                }
+
+                if ($untilFirstFailure) {
+                    continue 2;
                 }
             }
         }

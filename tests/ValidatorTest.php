@@ -238,6 +238,12 @@ class ValidatorTest extends TestCase
                 new UntilFirstFailure,
                 new IsNotEmpty,
                 new FooBarRule,
+                static function () {
+                    // this and the following rule must not be checked
+                    // since the UntilFirstFailure rule is used
+                    // for the 'bar' attribute
+                    throw new \Exception();
+                },
                 new Length(5, 10)
             ],
             'baz' => [
