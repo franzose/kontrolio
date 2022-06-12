@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-final class Ip extends AbstractRule
+final class IpAddress extends AbstractRule
 {
     const V4 = '4';
     const V6 = '6';

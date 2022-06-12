@@ -19,7 +19,7 @@ return [
     'greater_than_or_equal' => \Kontrolio\Rules\Core\GreaterThanOrEqual::class,
     'identical_to' => \Kontrolio\Rules\Core\IdenticalTo::class,
     'inn' => \Kontrolio\Rules\Core\Inn::class,
-    'ip' => \Kontrolio\Rules\Core\Ip::class,
+    'ip' => \Kontrolio\Rules\Core\IpAddress::class,
     'is_false' => \Kontrolio\Rules\Core\IsFalse::class,
     'is_null' => \Kontrolio\Rules\Core\IsNull::class,
     'is_true' => \Kontrolio\Rules\Core\IsTrue::class,
