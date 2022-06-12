@@ -15,10 +15,7 @@ The best way to set up validator:
 $valid = Factory::getInstance()->make($data, $rules, $messages)->validate();
 
 // Using a service container implementation
-$container->singleton('validation', function() {
-    return new Factory;
-});
-
+$container->singleton('validation', static fn() => new Factory());
 $container->get('validation')->make($data, $rules, $messages)->validate();
 ```
 
@@ -48,13 +45,9 @@ You can also mix instances and callables when you set multiple validation rules 
 $rules = [
     'one' => 'not_empty|length:5,15',
     'two' => new Email,
-    'three' => function($value) {
-        return $value === 'taz';
-    },
+    'three' => static fn ($value) => $value === 'taz',
     'four' => [
-        function($value) {
-            return is_numeric($value);
-        },
+        static fn ($value) => is_numeric($value),
         new GreaterThan(5),
     ]
 ];
@@ -80,7 +73,7 @@ A single rule validation can be skipped when the validated attribute value is em
 ```php
 'some' => [
     MyRule::allowingEmptyValue(),
-    // (new MyRule)->allowEmptyValue()
+    // (new MyRule())->allowEmptyValue()
 ]
 ```
 
@@ -104,10 +97,8 @@ class MyRule extends AbstractRule
 Callable rule is nothing more than a closure or function that takes an attribute value and returns either boolean result of the validation or an options array equivalent to options provided by a class based validation rule:
 
 ```php
-    'foo' => function($value) {
-        return is_string($value);
-    },
-    'bar' => function($value) {
+    'foo' => static fn ($value) => is_string($value),
+    'bar' => static function ($value) {
         return [
             // required when array
             'valid' => $value === 'taz',
@@ -122,15 +113,15 @@ Callable rule is nothing more than a closure or function that takes an attribute
 ```
 
 ## Custom rules
-Of course you can create your custom rules. Just remember that each rule must be an instance of `Kontrolio\Rules\RuleInterface`, implement `isValid()` method and have an identifier. By default, identifiers are resolved by `Kontrolio\Rules\AbstractRule` and are based on the rule class name without namespace. However you can override this behavior if you wish overriding `getName()` method.
+Of course you can create your custom rules. Just remember that each rule must be an instance of `Kontrolio\Rules\RuleInterface`, implement `isValid()` method and have an identifier. By default, identifiers are resolved by `Kontrolio\Rules\AbstractRule` and are based on the rule class name without namespace. However, you can override this behavior if you wish overriding `getName()` method.
 
 Custom rules can be added eighter via factory or validator itself:
 
 ```php
-$factory = (new Factory)->extend([CustomRule::class]);
+$factory = (new Factory())->extend([CustomRule::class]);
 
 // with a custom identifier
-$factory = (new Factory)->extend(['some_custom' => CustomRule::class]);
+$factory = (new Factory())->extend(['some_custom' => CustomRule::class]);
 $validator = $factory->make([], [], []);
 
 // if you don't use factory
@@ -149,7 +140,7 @@ It's not the same as using `allowEmptyValue()` or `canSkipValidation()` on a rul
 $rules = [
     'one' => 'sometimes|length:5,15',
     // 'one' => [
-    //     new Sometimes,
+    //     new Sometimes(),
     //     new Length(5, 15)
     // ]
 ];
@@ -171,9 +162,9 @@ $data = [
 
 $rules = [
     'attr' => [
-        new UntilFirstFailure,
-        new NotBlank,
-        new NotFooBar
+        new UntilFirstFailure(),
+        new NotBlank(),
+        new NotFooBar()
     ]
 ];
 

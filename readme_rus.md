@@ -14,10 +14,7 @@ Kontrolio — простая библиотека валидации данны�
 $valid = Factory::getInstance()->make($data, $rules, $messages)->validate();
 
 // Пример использования с контейнером сервисов
-$container->singleton('validation', function() {
-    return new Factory;
-});
-
+$container->singleton('validation', static fn() => new Factory());
 $container->get('validation')->make($data, $rules, $messages)->validate();
 ```
 
@@ -47,13 +44,9 @@ $data = [
 $rules = [
     'one' => 'not_empty|length:5,15',
     'two' => new Email,
-    'three' => function($value) {
-        return $value === 'taz';
-    },
+    'three' => static fn ($value) => $value === 'taz',
     'four' => [
-        function($value) {
-            return is_numeric($value);
-        },
+        static fn ($value) => is_numeric($value),
         new GreaterThan(5),
     ]
 ];
@@ -79,7 +72,7 @@ $rules = [
 ```php
 'some' => [
     MyRule::allowingEmptyValue(),
-    // (new MyRule)->allowEmptyValue()
+    // (new MyRule())->allowEmptyValue()
 ]
 ```
 
@@ -103,10 +96,8 @@ class MyRule extends AbstractRule
 Правило-коллэк — это ничто иное как простое замыкание или функция обратного вызова, которая принимает единственным аргументом значение валидируемого атрибута и возвращает либо булевый результат валидации, либо массив опций, эквивалентных тем, что используются классами-правилами:
 
 ```php
-    'foo' => function($value) {
-        return is_string($value);
-    },
-    'bar' => function($value) {
+    'foo' => static fn ($value) => is_string($value),
+    'bar' => static function ($value) {
         return [
             // required when array
             'valid' => $value === 'taz',
@@ -126,10 +117,10 @@ class MyRule extends AbstractRule
 Добавить правила в валидатор вы можете как через фабрику, так и непосредственно через сервис валидации:
 
 ```php
-$factory = (new Factory)->extend([CustomRule::class]);
+$factory = (new Factory())->extend([CustomRule::class]);
 
 // с кастомным идентификатором
-$factory = (new Factory)->extend(['some_custom' => CustomRule::class]);
+$factory = (new Factory())->extend(['some_custom' => CustomRule::class]);
 $validator = $factory->make([], [], []);
 
 // если вы не используете фабрику
@@ -148,7 +139,7 @@ $validator->validate();
 $rules = [
     'one' => 'sometimes|length:5,15',
     // 'one' => [
-    //     new Sometimes,
+    //     new Sometimes(),
     //     new Length(5, 15)
     // ]
 ];
@@ -170,9 +161,9 @@ $data = [
 
 $rules = [
     'attr' => [
-        new UntilFirstFailure,
-        new NotBlank,
-        new NotFooBar
+        new UntilFirstFailure(),
+        new NotBlank(),
+        new NotFooBar()
     ]
 ];
 
