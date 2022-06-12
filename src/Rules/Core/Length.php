@@ -12,7 +12,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Length extends AbstractRule
+final class Length extends AbstractRule
 {
     /**
      * Length validation rule constructor.

@@ -10,7 +10,7 @@ use UnexpectedValueException;
  *
  * @package Kontrolio\Rules
  */
-class CallableRuleWrapper extends AbstractRule
+final class CallableRuleWrapper extends AbstractRule
 {
     /**
      * Original rule.

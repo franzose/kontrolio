@@ -11,18 +11,13 @@ use Kontrolio\Rules\RuleInterface;
  *
  * @package Kontrolio\Rules\Core
  */
-class FirstPassed extends AbstractRule
+final class FirstPassed extends AbstractRule
 {
     /**
      * @var RuleInterface[]
      */
     private array $rules;
 
-    /**
-     * Validation rule constructor
-     *
-     * @param RuleInterface[] ...$rules
-     */
     public function __construct(RuleInterface ...$rules)
     {
         $this->rules = $rules;
@@ -31,8 +26,10 @@ class FirstPassed extends AbstractRule
     public function isValid(mixed $input = null): bool
     {
         foreach ($this->rules as $rule) {
-            if (($result = $rule->isValid($input)) === true) {
-                return $result;
+            $isValid = $rule->isValid($input);
+
+            if ($isValid) {
+                return true;
             }
         }
 

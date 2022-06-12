@@ -8,7 +8,7 @@ namespace Kontrolio\Rules\Core;
  *
  * @package Kontrolio\Rules\Core
  */
-class Accepted extends IsIn
+final class Accepted extends IsIn
 {
     public function __construct()
     {

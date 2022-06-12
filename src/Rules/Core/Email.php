@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Email extends AbstractRule
+final class Email extends AbstractRule
 {
     /**
      * Email validation rule constructor.

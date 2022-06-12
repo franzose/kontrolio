@@ -5,7 +5,7 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-class Snils extends AbstractRule
+final class Snils extends AbstractRule
 {
     public function isValid(mixed $input = null): bool
     {

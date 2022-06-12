@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Regex extends AbstractRule
+final class Regex extends AbstractRule
 {
     private string $pattern;
 

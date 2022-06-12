@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractComparisonRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class LessThanOrEqual extends AbstractComparisonRule
+final class LessThanOrEqual extends AbstractComparisonRule
 {
     public function isValid(mixed $input = null): bool
     {

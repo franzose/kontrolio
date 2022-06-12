@@ -11,7 +11,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Time extends AbstractRule
+final class Time extends AbstractRule
 {
     public const PATTERN = '/^(\d{2}):(\d{2}):(\d{2})$/';
 

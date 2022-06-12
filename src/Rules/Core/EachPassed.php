@@ -11,7 +11,7 @@ use Kontrolio\Rules\RuleInterface;
  *
  * @package Kontrolio\Rules\Core
  */
-class EachPassed extends AbstractRule
+final class EachPassed extends AbstractRule
 {
     /**
      * @var RuleInterface[]

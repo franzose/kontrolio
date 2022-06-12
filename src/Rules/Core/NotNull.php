@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class NotNull extends AbstractRule
+final class NotNull extends AbstractRule
 {
     public function isValid(mixed $input = null): bool
     {

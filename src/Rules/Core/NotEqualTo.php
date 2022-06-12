@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractComparisonRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class NotEqualTo extends AbstractComparisonRule
+final class NotEqualTo extends AbstractComparisonRule
 {
     public function isValid(mixed $input = null): bool
     {

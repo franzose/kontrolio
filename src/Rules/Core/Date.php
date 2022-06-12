@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Date extends AbstractRule
+final class Date extends AbstractRule
 {
     public const PATTERN = '/^(\d{4})-(\d{2})-(\d{2})$/';
 
@@ -22,7 +22,7 @@ class Date extends AbstractRule
 
         $input = (string) $input;
 
-        if (!preg_match(static::PATTERN, $input, $matches)) {
+        if (!preg_match(self::PATTERN, $input, $matches)) {
             $this->violations[] = 'format';
 
             return false;

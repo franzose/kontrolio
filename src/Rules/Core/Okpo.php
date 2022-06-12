@@ -5,7 +5,7 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-class Okpo extends AbstractRule
+final class Okpo extends AbstractRule
 {
     public function isValid(mixed $input = null): bool
     {

@@ -11,7 +11,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class DateTime extends AbstractRule
+final class DateTime extends AbstractRule
 {
     public const PATTERN = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/';
     public const FORMAT = 'Y-m-d H:i:s';
@@ -24,7 +24,7 @@ class DateTime extends AbstractRule
 
         $input = (string) $input;
 
-        PhpDateTime::createFromFormat(static::FORMAT, $input);
+        PhpDateTime::createFromFormat(self::FORMAT, $input);
         $errors = PhpDateTime::getLastErrors();
 
         if ($errors['error_count'] > 0) {

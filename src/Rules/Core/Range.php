@@ -14,7 +14,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Range extends AbstractRule
+final class Range extends AbstractRule
 {
     private mixed $min;
     private mixed $max;

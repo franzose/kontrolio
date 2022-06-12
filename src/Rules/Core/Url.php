@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Url extends AbstractRule
+final class Url extends AbstractRule
 {
     /**
      * Url validation pattern.
@@ -50,7 +50,7 @@ class Url extends AbstractRule
             return false;
         }
 
-        $pattern = sprintf(static::PATTERN, implode('|', self::PROTOCOLS));
+        $pattern = sprintf(self::PATTERN, implode('|', self::PROTOCOLS));
 
         if (!preg_match($pattern, $input)) {
             $this->violations[] = 'url';

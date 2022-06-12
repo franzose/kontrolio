@@ -10,7 +10,7 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class Alphadash extends AbstractRule
+final class Alphadash extends AbstractRule
 {
     public function isValid(mixed $input = null): bool
     {

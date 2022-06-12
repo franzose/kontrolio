@@ -10,14 +10,14 @@ use Kontrolio\Rules\AbstractRule;
  *
  * @package Kontrolio\Rules\Core
  */
-class CardScheme extends AbstractRule
+final class CardScheme extends AbstractRule
 {
     /**
      * Card schemes.
      *
      * @var array
      */
-    protected const SCHEMES = [
+    public const SCHEMES = [
         // American Express card numbers start with 34 or 37 and have 15 digits.
         'AMEX' => ['/^3[47][0-9]{13}$/'],
 
@@ -77,7 +77,7 @@ class CardScheme extends AbstractRule
             return false;
         }
 
-        foreach (static::SCHEMES as $scheme => $regexes) {
+        foreach (self::SCHEMES as $scheme => $regexes) {
             foreach ($regexes as $regex) {
                 if (preg_match($regex, $input)) {
                     return true;

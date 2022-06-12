@@ -5,7 +5,7 @@ namespace Kontrolio\Rules\Core;
 
 use Kontrolio\Rules\AbstractRule;
 
-class Ogrn extends AbstractRule
+final class Ogrn extends AbstractRule
 {
     public function isValid(mixed $input = null): bool
     {
