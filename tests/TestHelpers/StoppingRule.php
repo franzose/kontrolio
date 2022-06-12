@@ -8,7 +8,7 @@ use Kontrolio\Rules\StopsFurtherValidationInterface;
 
 final class StoppingRule extends AbstractRule implements StopsFurtherValidationInterface
 {
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return false;
     }

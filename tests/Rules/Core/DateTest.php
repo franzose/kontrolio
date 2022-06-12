@@ -15,14 +15,14 @@ use PHPUnit\Framework\TestCase;
 
 class DateTest extends TestCase
 {
-    public function testBasicValidation()
+    public function testBasicValidation(): void
     {
         $rule = new Date;
 
         static::assertTrue($rule->isValid('2016-06-06'));
     }
 
-    public function testViolations()
+    public function testViolations(): void
     {
         $one = new Date;
         $one->isValid('foo');

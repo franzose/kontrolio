@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $factory = new Factory();
 
         static::assertEquals(require __DIR__ . '/../config/aliases.php', $factory->getAvailable());
     }
     
-    public function testFactory()
+    public function testFactory(): void
     {
         $factory = new Factory();
         $data = ['foo' => 'bar'];

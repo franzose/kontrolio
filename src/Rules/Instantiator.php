@@ -14,11 +14,11 @@ final class Instantiator
      *
      * @param string $class
      *
-     * @return object|RuleInterface
+     * @return RuleInterface
      * @throws UnexpectedValueException
      * @throws ReflectionException
      */
-    public function make($class)
+    public function make(string $class): RuleInterface
     {
         return $this->reflect($class)->newInstanceWithoutConstructor();
     }
@@ -29,11 +29,11 @@ final class Instantiator
      * @param string $class
      * @param array $arguments
      *
-     * @return object|RuleInterface
+     * @return RuleInterface
      * @throws UnexpectedValueException
      * @throws ReflectionException
      */
-    public function makeWithArgs($class, array $arguments = [])
+    public function makeWithArgs(string $class, array $arguments = []): RuleInterface
     {
         return $this->reflect($class)->newInstanceArgs($arguments);
     }
@@ -46,7 +46,7 @@ final class Instantiator
      * @return ReflectionClass
      * @throws ReflectionException
      */
-    private function reflect($class)
+    private function reflect(string $class): ReflectionClass
     {
         $obj = (new ReflectionClass($class));
 

@@ -8,12 +8,12 @@ use PHPUnit\Framework\TestCase;
 
 class TimeTest extends TestCase
 {
-    public function testBasicValidation()
+    public function testBasicValidation(): void
     {
         static::assertTrue((new Time)->isValid('23:59:59'));
     }
 
-    public function testGeneralFormatViolation()
+    public function testGeneralFormatViolation(): void
     {
         $rule = new Time;
 
@@ -21,7 +21,7 @@ class TimeTest extends TestCase
         static::assertEquals(['format'], $rule->getViolations());
     }
 
-    public function testWarningViolations()
+    public function testWarningViolations(): void
     {
         $rule = new Time;
         

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ArrayNormalizerTest extends TestCase
 {
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $normalizer = new ArrayNormalizer(new Parser(new Repository(new Instantiator(), [
             EqualTo::class,

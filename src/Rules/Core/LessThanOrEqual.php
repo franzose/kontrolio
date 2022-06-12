@@ -12,14 +12,7 @@ use Kontrolio\Rules\AbstractComparisonRule;
  */
 class LessThanOrEqual extends AbstractComparisonRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return $input <= $this->value;
     }

@@ -9,15 +9,15 @@ use UnexpectedValueException;
 final class Repository
 {
     private $rules = [];
-    private $instantiator;
 
-    public function __construct(Instantiator $instantiator, array $rules = [])
-    {
-        $this->instantiator = $instantiator;
+    public function __construct(
+        private readonly Instantiator $instantiator,
+        array $rules = []
+    ) {
         $this->add($rules);
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->rules;
     }
@@ -31,15 +31,15 @@ final class Repository
      * @param string $name
      * @param array $arguments
      *
-     * @return RuleInterface|object
+     * @return RuleInterface
      * @throws ReflectionException
      */
-    public function make($name, array $arguments)
+    public function make(string $name, array $arguments): RuleInterface
     {
         return $this->instantiator->makeWithArgs($this->get($name), $arguments);
     }
 
-    public function has($name)
+    public function has($name): bool
     {
         return array_key_exists($name, $this->rules);
     }
@@ -52,7 +52,7 @@ final class Repository
      * @return string
      * @throws UnexpectedValueException
      */
-    public function get($name)
+    public function get(string $name): string
     {
         if ($this->has($name)) {
             return $this->rules[$name];
@@ -70,7 +70,7 @@ final class Repository
      *
      * @return $this
      */
-    public function add(array $rules)
+    public function add(array $rules): self
     {
         $mapped = array_combine($this->getRuleNames($rules), array_values($rules));
 
@@ -79,7 +79,7 @@ final class Repository
         return $this;
     }
 
-    private function getRuleNames(array $rules)
+    private function getRuleNames(array $rules): array
     {
         return array_map(function ($key) use ($rules) {
             return is_int($key) ? $this->instantiator->make($rules[$key])->getName() : $key;

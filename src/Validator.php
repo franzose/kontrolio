@@ -26,69 +26,56 @@ class Validator implements ValidatorInterface
      *
      * @var Data
      */
-    private $data;
-    
-    /**
-     * Raw validation rules.
-     *
-     * @var array
-     */
-    private $rules;
+    private Data $data;
 
     /**
      * Formatted validation rules.
      *
      * @var array
      */
-    private $normalizedRules = [];
-
-    /**
-     * Validation messages.
-     *
-     * @var array
-     */
-    private $messages;
+    private array $normalizedRules = [];
 
     /**
      * Available validation rules.
      *
      * @var Repository
      */
-    private $repository;
+    private Repository $repository;
 
     /**
      * Raw rules normalizer.
      *
      * @var ArrayNormalizer
      */
-    private $normalizer;
+    private ArrayNormalizer $normalizer;
 
     /**
      * Validation errors.
      *
      * @var Errors
      */
-    private $errors;
+    private Errors $errors;
 
     /**
      * Flag indicating that the validation should stop.
      *
      * @var bool
      */
-    private $shouldStopOnFirstFailure = false;
+    private bool $shouldStopOnFirstFailure = false;
 
     /**
      * Validator constructor.
      *
-     * @param array $data
-     * @param array $rules
-     * @param array $messages
+     * @param array $data Data to validate
+     * @param array $rules Validation rules
+     * @param array $messages Validation messages
      */
-    public function __construct(array $data, array $rules, array $messages = [])
+    public function __construct(
+        array $data,
+        private array $rules,
+        private array $messages = [])
     {
         $this->data = new Data($data);
-        $this->rules = $rules;
-        $this->messages = $messages;
         $instantiator = new Instantiator();
         $this->repository = new Repository($instantiator);
         $this->normalizer = new ArrayNormalizer(new Parser($this->repository));
@@ -102,7 +89,7 @@ class Validator implements ValidatorInterface
      *
      * @return $this
      */
-    public function extend(array $rules)
+    public function extend(array $rules): static
     {
         $this->repository->add($rules);
 
@@ -114,7 +101,7 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getAvailable()
+    public function getAvailable(): array
     {
         return $this->repository->all();
     }
@@ -124,9 +111,9 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
-        return $this->data->raw();
+        return $this->data->raw;
     }
 
     /**
@@ -136,7 +123,7 @@ class Validator implements ValidatorInterface
      *
      * @return $this
      */
-    public function setData(array $data)
+    public function setData(array $data): static
     {
         $this->data = new Data($data);
 
@@ -148,7 +135,7 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
@@ -161,7 +148,7 @@ class Validator implements ValidatorInterface
      * @return $this
      * @throws UnexpectedValueException
      */
-    public function setRules(array $rules)
+    public function setRules(array $rules): static
     {
         $this->rules = $rules;
         $this->normalizedRules = $this->normalizer->normalize($rules);
@@ -174,7 +161,7 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getMessages()
+    public function getMessages(): array
     {
         return $this->messages;
     }
@@ -186,7 +173,7 @@ class Validator implements ValidatorInterface
      *
      * @return $this
      */
-    public function setMessages(array $messages)
+    public function setMessages(array $messages): static
     {
         $this->messages = $messages;
 
@@ -199,7 +186,7 @@ class Validator implements ValidatorInterface
      * @return bool
      * @throws UnexpectedValueException
      */
-    public function validate()
+    public function validate(): bool
     {
         if (empty($this->normalizedRules)) {
             $this->normalizedRules = $this->normalizer->normalize($this->rules);
@@ -211,7 +198,7 @@ class Validator implements ValidatorInterface
             foreach ($rules as $rule) {
                 $attribute = $this->data->get($attrName);
                 $rule = is_callable($rule)
-                    ? new CallableRuleWrapper($rule, $attribute->getValue())
+                    ? new CallableRuleWrapper($rule, $attribute->value)
                     : $rule;
 
                 if ($rule instanceof UntilFirstFailure) {
@@ -247,7 +234,7 @@ class Validator implements ValidatorInterface
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return !$this->errors->isEmpty();
     }
@@ -257,7 +244,7 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors->raw();
     }
@@ -267,7 +254,7 @@ class Validator implements ValidatorInterface
      *
      * @return array
      */
-    public function getErrorsList()
+    public function getErrorsList(): array
     {
         return $this->errors->flatten();
     }
@@ -279,7 +266,7 @@ class Validator implements ValidatorInterface
      *
      * @return $this
      */
-    public function shouldStopOnFirstFailure($stop = true)
+    public function shouldStopOnFirstFailure(bool $stop = true): static
     {
         $this->shouldStopOnFirstFailure = $stop;
 

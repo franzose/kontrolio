@@ -16,7 +16,7 @@ class FirstPassed extends AbstractRule
     /**
      * @var RuleInterface[]
      */
-    private $rules;
+    private array $rules;
 
     /**
      * Validation rule constructor
@@ -28,14 +28,7 @@ class FirstPassed extends AbstractRule
         $this->rules = $rules;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         foreach ($this->rules as $rule) {
             if (($result = $rule->isValid($input)) === true) {

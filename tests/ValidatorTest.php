@@ -16,12 +16,12 @@ use PHPUnit\Framework\TestCase;
 
 class ValidatorTest extends TestCase
 {
-    private function validate($data = [], $rules = [], $messages = [])
+    private function validate($data = [], $rules = [], $messages = []): bool
     {
         return (new Validator($data, $rules, $messages))->validate();
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $data = ['name' => 'foo'];
         $rules = [
@@ -51,15 +51,14 @@ class ValidatorTest extends TestCase
         static::assertEquals($messages, $validator->getMessages());
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
-    public function testThrowsOnUnknownRule()
+    public function testThrowsOnUnknownRule(): void
     {
+        $this->expectException(\UnexpectedValueException::class);
+
         $this->validate(['foo' => 'bar'], ['foo' => 'uknown_rule'], ['foo' => 'error!']);
     }
 
-    public function testParserTakesAvailableRules()
+    public function testParserTakesAvailableRules(): void
     {
         $data = ['foo' => null];
         $rules = [
@@ -82,7 +81,7 @@ class ValidatorTest extends TestCase
         static::assertEquals($errors, $validator->getErrors());
     }
 
-    public function testDotNotation()
+    public function testDotNotation(): void
     {
         $data = ['foo' => ['bar' => null]];
         $rules = ['foo.bar' => [new Length(5, 15)]];
@@ -95,7 +94,7 @@ class ValidatorTest extends TestCase
         static::assertEquals($errors, $validator->getErrors());
     }
     
-    public function testBasicValidation()
+    public function testBasicValidation(): void
     {
         $data = ['name' => 'foo'];
         $rules = ['name' => new IsNotEmpty];
@@ -103,7 +102,7 @@ class ValidatorTest extends TestCase
         static::assertTrue($this->validate($data, $rules));
     }
     
-    public function testFalsyValidation()
+    public function testFalsyValidation(): void
     {
         $data = ['name' => null];
         $rule = new IsNotEmpty;
@@ -117,11 +116,9 @@ class ValidatorTest extends TestCase
         static::assertEquals($errors, $validator->getErrors());
     }
 
-    public function testCallbackValidation()
+    public function testCallbackValidation(): void
     {
-        $callback = function($value) {
-            return $value !== null && $value !== '';
-        };
+        $callback = static fn ($value) => $value !== null && $value !== '';
 
         $validator = new Validator(
             ['foo' => null],
@@ -135,7 +132,7 @@ class ValidatorTest extends TestCase
         static::assertEquals($errors, $validator->getErrors());
     }
     
-    public function testSkippingValidation()
+    public function testSkippingValidation(): void
     {
         $rules = ['foo' => new SkippableRule()];
         $messages = ['foo' => 'bar'];
@@ -145,7 +142,7 @@ class ValidatorTest extends TestCase
         static::assertTrue($this->validate(['foo' => null], ['foo' => new EmptyRule()], ['foo' => 'baz']));
     }
 
-    public function testBypassingValidation()
+    public function testBypassingValidation(): void
     {
         $rules = [
             'foo' => [
@@ -166,7 +163,7 @@ class ValidatorTest extends TestCase
         static::assertTrue($this->validate($data, $rules));
     }
 
-    public function testBypassingEmpyValues()
+    public function testBypassingEmpyValues(): void
     {
         $rules = [
             'foo' => (new Length(5, 15))->allowEmptyValue(),
@@ -188,7 +185,7 @@ class ValidatorTest extends TestCase
         static::assertFalse($this->validate($data, $rules));
     }
     
-    public function testStoppingOnFirstFailure()
+    public function testStoppingOnFirstFailure(): void
     {
         $data = [
             'foo' => null,
@@ -222,7 +219,7 @@ class ValidatorTest extends TestCase
         static::assertCount(1, $validator->getErrors());
     }
 
-    public function testStoppingOnFirstFailureWithinRulesGroup()
+    public function testStoppingOnFirstFailureWithinRulesGroup(): void
     {
         $data = [
             'foo' => null,
@@ -269,7 +266,7 @@ class ValidatorTest extends TestCase
         static::assertCount(1, $errors['bar']);
     }
 
-    public function testGetErrorsListReturnsPlainArray()
+    public function testGetErrorsListReturnsPlainArray(): void
     {
         $data = [
             'foo' => null,
@@ -309,7 +306,7 @@ class ValidatorTest extends TestCase
         static::assertEquals($expected, $errors);
     }
 
-    public function testShouldReturnPlaceholdersAsDefaultErrorMessages()
+    public function testShouldReturnPlaceholdersAsDefaultErrorMessages(): void
     {
         $data = [
             'foo' => null,
@@ -340,7 +337,7 @@ class ValidatorTest extends TestCase
         static::assertEquals($expected, $validator->getErrorsList());
     }
 
-    public function testStopsFurtherValidation()
+    public function testStopsFurtherValidation(): void
     {
         $data = [
             'foo' => null,

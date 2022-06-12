@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class NotBlankTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         $rule = new NotBlank;
 

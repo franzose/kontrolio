@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class NotNullTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         $rule = new NotNull;
 

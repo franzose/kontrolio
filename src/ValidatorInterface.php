@@ -17,14 +17,14 @@ interface ValidatorInterface
      *
      * @return $this
      */
-    public function extend(array $rules);
+    public function extend(array $rules): static;
 
     /**
      * Returns data that's being validated.
      *
      * @return array
      */
-    public function getData();
+    public function getData(): array;
 
     /**
      * Sets data that need to be validated.
@@ -33,14 +33,14 @@ interface ValidatorInterface
      *
      * @return $this
      */
-    public function setData(array $data);
+    public function setData(array $data): static;
 
     /**
      * Returns validation rules.
      *
      * @return array
      */
-    public function getRules();
+    public function getRules(): array;
 
     /**
      * Checks proper format of the validation rules and sets them for the validator.
@@ -51,14 +51,14 @@ interface ValidatorInterface
      * @throws \OutOfBoundsException
      * @throws \UnexpectedValueException
      */
-    public function setRules(array $rules);
+    public function setRules(array $rules): static;
 
     /**
      * Returns validation messages.
      *
      * @return array
      */
-    public function getMessages();
+    public function getMessages(): array;
 
     /**
      * Sets validation messages.
@@ -67,7 +67,7 @@ interface ValidatorInterface
      *
      * @return $this
      */
-    public function setMessages(array $messages);
+    public function setMessages(array $messages): static;
 
     /**
      * Validates given data.
@@ -75,28 +75,28 @@ interface ValidatorInterface
      * @return bool
      * @throws \UnexpectedValueException
      */
-    public function validate();
+    public function validate(): bool;
 
     /**
      * Checks whether there are validation errors.
      *
      * @return bool
      */
-    public function hasErrors();
+    public function hasErrors(): bool;
 
     /**
      * Returns all validation errors.
      *
      * @return array
      */
-    public function getErrors();
+    public function getErrors(): array;
 
     /**
      * Returns a plain validation errors array without their attribute names.
      *
      * @return array
      */
-    public function getErrorsList();
+    public function getErrorsList(): array;
 
     /**
      * Determines whether validation should stop on the first failure.
@@ -105,5 +105,5 @@ interface ValidatorInterface
      *
      * @return $this
      */
-    public function shouldStopOnFirstFailure($stop = true);
+    public function shouldStopOnFirstFailure(bool $stop = true): static;
 }

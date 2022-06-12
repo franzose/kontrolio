@@ -15,14 +15,14 @@ class Factory implements FactoryInterface
      *
      * @var static
      */
-    private static $instance;
+    private static self $instance;
 
     /**
      * All available validation rules.
      *
      * @var array
      */
-    protected $available = [];
+    protected array $available = [];
 
     /**
      * Validation service factory constructor.
@@ -38,13 +38,9 @@ class Factory implements FactoryInterface
      *
      * @return static
      */
-    public static function getInstance()
+    public static function getInstance(): static
     {
-        if (static::$instance === null) {
-            return static::$instance = new static;
-        }
-
-        return static::$instance;
+        return static::$instance ?? (static::$instance = new static);
     }
 
     /**
@@ -56,7 +52,7 @@ class Factory implements FactoryInterface
      *
      * @return Validator
      */
-    public function make(array $data, array $rules, array $messages = [])
+    public function make(array $data, array $rules, array $messages = []): ValidatorInterface
     {
         return (new Validator($data, $rules, $messages))->extend($this->available);
     }
@@ -68,7 +64,7 @@ class Factory implements FactoryInterface
      *
      * @return $this
      */
-    public function extend(array $rules)
+    public function extend(array $rules): static
     {
         $this->available = array_merge($this->available, $rules);
 
@@ -80,7 +76,7 @@ class Factory implements FactoryInterface
      *
      * @return array
      */
-    public function getAvailable()
+    public function getAvailable(): array
     {
         return $this->available;
     }

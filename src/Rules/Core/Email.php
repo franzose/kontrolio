@@ -13,39 +13,18 @@ use Kontrolio\Rules\AbstractRule;
 class Email extends AbstractRule
 {
     /**
-     * Whether to check MX record.
-     *
-     * @var bool
-     */
-    private $mx;
-
-    /**
-     * Whether to check host.
-     *
-     * @var bool
-     */
-    private $host;
-
-    /**
      * Email validation rule constructor.
      *
-     * @param bool $mx
-     * @param bool $host
+     * @param bool $mx Whether to check MX record
+     * @param bool $host Whether to check host
      */
-    public function __construct($mx = false, $host = false)
-    {
-        $this->mx = $mx;
-        $this->host = $host;
+    public function __construct(
+        private readonly bool $mx = false,
+        private readonly bool $host = false
+    ) {
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if (!preg_match('/^.+\@\S+\.\S+$/', $input)) {
             return false;
@@ -71,9 +50,9 @@ class Email extends AbstractRule
      *
      * @return bool
      */
-    private function checkMX($host)
+    private function checkMX(string $host): bool
     {
-        return checkdnsrr($host, 'MX');
+        return checkdnsrr($host);
     }
 
     /**
@@ -83,7 +62,7 @@ class Email extends AbstractRule
      *
      * @return bool
      */
-    private function checkHost($host)
+    private function checkHost(string $host): bool
     {
         return $this->checkMX($host) || (checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA'));
     }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class EachPassedTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         $rule = new EachPassed(
             new Email(),

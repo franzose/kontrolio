@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BetweenInclusiveTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertTrue((new BetweenInclusive(5, 10))->isValid(6));
         static::assertTrue((new BetweenInclusive(5, 10))->isValid(5));

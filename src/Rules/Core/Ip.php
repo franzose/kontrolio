@@ -31,31 +31,11 @@ class Ip extends AbstractRule
     const V6_ONLY_PUBLIC = '6_public';
     const ALL_ONLY_PUBLIC = 'all_public';
 
-    /**
-     * IP version flag.
-     *
-     * @var int
-     */
-    protected $version;
-
-    /**
-     * Ip constructor.
-     *
-     * @param string $version
-     */
-    public function __construct($version = self::V4)
+    public function __construct(private readonly string $version = self::V4)
     {
-        $this->version = $version;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null || $input === '') {
             return false;
@@ -75,33 +55,21 @@ class Ip extends AbstractRule
      *
      * @return int|null
      */
-    protected function getFlag()
+    protected function getFlag(): ?int
     {
-        switch ($this->version) {
-            case static::V4:
-                return FILTER_FLAG_IPV4;
-            case static::V6:
-                return FILTER_FLAG_IPV6;
-            case static::V4_NO_PRIV:
-                return FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE;
-            case static::V6_NO_PRIV:
-                return FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE;
-            case static::ALL_NO_PRIV:
-                return FILTER_FLAG_NO_PRIV_RANGE;
-            case static::V4_NO_RES:
-                return FILTER_FLAG_IPV4 | FILTER_FLAG_NO_RES_RANGE;
-            case static::V6_NO_RES:
-                return FILTER_FLAG_IPV6 | FILTER_FLAG_NO_RES_RANGE;
-            case static::ALL_NO_RES:
-                return FILTER_FLAG_NO_RES_RANGE;
-            case static::V4_ONLY_PUBLIC:
-                return FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
-            case static::V6_ONLY_PUBLIC:
-                return FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
-            case static::ALL_ONLY_PUBLIC:
-                return FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
-            default:
-                return null;
-        }
+        return match ($this->version) {
+            static::V4 => FILTER_FLAG_IPV4,
+            static::V6 => FILTER_FLAG_IPV6,
+            static::V4_NO_PRIV => FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE,
+            static::V6_NO_PRIV => FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE,
+            static::ALL_NO_PRIV => FILTER_FLAG_NO_PRIV_RANGE,
+            static::V4_NO_RES => FILTER_FLAG_IPV4 | FILTER_FLAG_NO_RES_RANGE,
+            static::V6_NO_RES => FILTER_FLAG_IPV6 | FILTER_FLAG_NO_RES_RANGE,
+            static::ALL_NO_RES => FILTER_FLAG_NO_RES_RANGE,
+            static::V4_ONLY_PUBLIC => FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
+            static::V6_ONLY_PUBLIC => FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
+            static::ALL_ONLY_PUBLIC => FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE,
+            default => null,
+        };
     }
 }

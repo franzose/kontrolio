@@ -7,17 +7,17 @@ use Kontrolio\Rules\AbstractRule;
 
 class EmptyRule extends AbstractRule
 {
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return true;
     }
 
-    public function emptyValueAllowed()
+    public function emptyValueAllowed(): bool
     {
         return true;
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return '';
     }

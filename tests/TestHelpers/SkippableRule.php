@@ -7,17 +7,17 @@ use Kontrolio\Rules\AbstractRule;
 
 class SkippableRule extends AbstractRule
 {
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return $input === 'foo';
     }
 
-    public function canSkipValidation($input = null)
+    public function canSkipValidation(mixed $input = null): bool
     {
         return $input === 'foo';
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return '';
     }

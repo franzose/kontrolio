@@ -8,15 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class CallableRuleWrapperTest extends TestCase
 {
-    /**
-     * @expectedException \UnexpectedValueException
-     */
-    public function testConstructorThrowsOnValidationAbsence()
+    public function testConstructorThrowsOnValidationAbsence(): void
     {
+        $this->expectException(\UnexpectedValueException::class);
+
         new CallableRuleWrapper(['name' => 'foo']);
     }
     
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $rule = new CallableRuleWrapper([
             'name' => 'foo',

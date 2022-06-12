@@ -12,32 +12,16 @@ use Kontrolio\Rules\AbstractRule;
  */
 class IsIn extends AbstractRule
 {
-
-    /**
-     * @var bool
-     */
-    protected $strictCompare;
-
-    /**
-     * @var array
-     */
-    protected $haystack;
-
-    /**
-     * IsIn constructor.
-     * @param array $haystack
-     * @param bool $strictCompare
-     */
-    public function __construct(array $haystack = [], $strictCompare = true)
-    {
-        $this->haystack = $haystack;
-        $this->strictCompare = $strictCompare;
+    public function __construct(
+        private readonly array $haystack = [],
+        private readonly bool $strictCompare = true
+    ) {
     }
 
     /**
      * @inheritdoc
      */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return in_array($input, $this->haystack, $this->strictCompare);
     }

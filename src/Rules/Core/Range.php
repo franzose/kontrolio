@@ -16,23 +16,10 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Range extends AbstractRule
 {
-    /**
-     * @var mixed|null
-     */
-    protected $min;
+    private mixed $min;
+    private mixed $max;
 
-    /**
-     * @var mixed|null
-     */
-    protected $max;
-
-    /**
-     * Range constructor.
-     *
-     * @param mixed $min
-     * @param mixed $max
-     */
-    public function __construct($min = null, $max = null)
+    public function __construct(mixed $min = null, mixed $max = null)
     {
         if ($min === null && $max === null) {
             throw new InvalidArgumentException('Either option "min" or "max" must be given.');
@@ -50,14 +37,7 @@ class Range extends AbstractRule
         $this->max = $max;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null) {
             return false;

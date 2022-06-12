@@ -15,7 +15,7 @@ interface RuleInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Validates input.
@@ -24,21 +24,21 @@ interface RuleInterface
      *
      * @return bool
      */
-    public function isValid($input = null);
+    public function isValid(mixed $input = null): bool;
 
     /**
      * When true, validation will be skipped if validated value is null or an empty string.
      *
      * @return bool
      */
-    public function emptyValueAllowed();
+    public function emptyValueAllowed(): bool;
 
     /**
      * Allows skipping validation when value is null or an empty string.
      *
      * @return $this
      */
-    public function allowEmptyValue();
+    public function allowEmptyValue(): static;
 
     /**
      * When simply true or some conditions return true, informs validator service that validation can be skipped.
@@ -47,19 +47,19 @@ interface RuleInterface
      *
      * @return bool
      */
-    public function canSkipValidation($input = null);
+    public function canSkipValidation(mixed $input = null): bool;
 
     /**
      * Checks whether validation rule has any violations.
      *
      * @return bool
      */
-    public function hasViolations();
+    public function hasViolations(): bool;
 
     /**
      * Returns validation rule violations.
      *
      * @return array
      */
-    public function getViolations();
+    public function getViolations(): array;
 }

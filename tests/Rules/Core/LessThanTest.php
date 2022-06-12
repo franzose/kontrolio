@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class LessThanTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertFalse((new LessThan(5))->isValid(5));
         static::assertFalse((new LessThan(5))->isValid(10));

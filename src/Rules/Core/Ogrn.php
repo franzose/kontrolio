@@ -7,14 +7,7 @@ use Kontrolio\Rules\AbstractRule;
 
 class Ogrn extends AbstractRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if (!is_numeric($input)) {
             $this->violations[] = 'numeric';
@@ -31,13 +24,13 @@ class Ogrn extends AbstractRule
             return false;
         }
         
-        if ($length == 13) {
+        if ($length === 13) {
             $result = floor(($input / 10) % 11);
 
-            return ($result == 10 ? $input[12] == 0 : $input[12] == $result);
+            return ($result === 10 ? $input[12] == 0 : $input[12] == $result);
         }
 
-        if ($length == 15) {
+        if ($length === 15) {
             $result = floor(($input / 10) % 13);
 
             return ($input[14] == ($result % 10));

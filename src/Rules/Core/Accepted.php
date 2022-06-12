@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Kontrolio\Rules\Core;
 
-use Kontrolio\Rules\AbstractRule;
-
 /**
  * Accepted validation rule.
  *
@@ -12,7 +10,6 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Accepted extends IsIn
 {
-
     public function __construct()
     {
         parent::__construct([

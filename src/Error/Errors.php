@@ -12,8 +12,8 @@ use Kontrolio\Rules\RuleInterface;
  */
 final class Errors implements Countable
 {
-    private $messages;
-    private $errors = [];
+    private array $messages;
+    private array $errors = [];
 
     public function __construct(array $messages)
     {
@@ -30,7 +30,7 @@ final class Errors implements Countable
      *
      * @return array
      */
-    public function flatten()
+    public function flatten(): array
     {
         $list = [];
 
@@ -43,24 +43,19 @@ final class Errors implements Countable
         return $list;
     }
 
-    /**
-     * @param Attribute|string $attribute
-     *
-     * @return bool
-     */
-    public function has($attribute)
+    public function has(Attribute|string $attribute): bool
     {
-        $attribute = $attribute instanceof Attribute ? $attribute->getName() : $attribute;
+        $attribute = $attribute instanceof Attribute ? $attribute->name : $attribute;
 
         return array_key_exists($attribute, $this->errors);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->errors);
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->count() === 0;
     }
@@ -71,15 +66,14 @@ final class Errors implements Countable
      * @param Attribute $attribute
      * @param RuleInterface $rule
      */
-    public function add(Attribute $attribute, RuleInterface $rule)
+    public function add(Attribute $attribute, RuleInterface $rule): void
     {
-        $name = $attribute->getName();
-        $errors = $this->prepareErrors($name, $this->prepareRuleKey($name, $rule), $rule);
+        $errors = $this->prepareErrors($attribute->name, $this->prepareRuleKey($attribute->name, $rule), $rule);
 
-        if ($this->has($name)) {
-            $this->errors[$name] = array_merge($this->errors[$name], $errors);
+        if ($this->has($attribute->name)) {
+            $this->errors[$attribute->name] = array_merge($this->errors[$attribute->name], $errors);
         } else {
-            $this->errors[$name] = $errors;
+            $this->errors[$attribute->name] = $errors;
         }
     }
 
@@ -89,9 +83,9 @@ final class Errors implements Countable
      * @param string $attribute
      * @param RuleInterface $rule
      *
-     * @return string
+     * @return string|int
      */
-    private function prepareRuleKey($attribute, RuleInterface $rule)
+    private function prepareRuleKey(string $attribute, RuleInterface $rule): string|int
     {
         $name = $rule->getName();
 
@@ -115,7 +109,7 @@ final class Errors implements Countable
      *
      * @return array
      */
-    private function prepareErrors($attribute, $ruleName, RuleInterface $rule)
+    private function prepareErrors(string $attribute, string $ruleName, RuleInterface $rule): array
     {
         $messages = $this->getMessagesByAttributeAndRuleName($attribute, $ruleName);
         $violations = $rule->getViolations();
@@ -135,13 +129,12 @@ final class Errors implements Countable
      *
      * @return array
      */
-    private function getMessagesByAttributeAndRuleName($attribute, $ruleName)
+    private function getMessagesByAttributeAndRuleName(string $attribute, string $ruleName): array
     {
         $prefix = $attribute . '.' . $ruleName;
 
-        $messages = array_filter($this->messages, static function ($key) use ($attribute, $prefix) {
-            return $key === $attribute || strpos($key, $prefix) === 0;
-        }, ARRAY_FILTER_USE_KEY);
+        $filter = static fn ($key) => $key === $attribute || str_starts_with($key, $prefix);
+        $messages = array_filter($this->messages, $filter, ARRAY_FILTER_USE_KEY);
 
         if (empty($messages)) {
             $messages = [$prefix];
@@ -159,7 +152,7 @@ final class Errors implements Countable
      *
      * @return array
      */
-    private function getMessagesForViolations(array $messages, array $violations, $prefix)
+    private function getMessagesForViolations(array $messages, array $violations, string $prefix): array
     {
         $result = [];
 

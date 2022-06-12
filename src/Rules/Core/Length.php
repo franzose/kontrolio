@@ -15,39 +15,18 @@ use Kontrolio\Rules\AbstractRule;
 class Length extends AbstractRule
 {
     /**
-     * Minimum length.
-     *
-     * @var int
-     */
-    private $min;
-
-    /**
-     * Maximum length.
-     *
-     * @var int
-     */
-    private $max;
-
-    /**
-     * Charset.
-     *
-     * @var string
-     */
-    private $charset;
-
-    /**
      * Length validation rule constructor.
      *
-     * @param int $min
-     * @param int $max
-     * @param string $charset
+     * @param int|null $min Minimum length
+     * @param int|null $max Maximum length
+     * @param string|null $charset Charset
      * @throws InvalidArgumentException
      * @throws LogicException
      */
     public function __construct(
-        $min = null,
-        $max = null,
-        $charset = 'UTF-8'
+        private readonly ?int $min = null,
+        private readonly ?int $max = null,
+        private readonly ?string $charset = 'UTF-8'
     ) {
         if ($min === null && $max === null) {
             throw new InvalidArgumentException('Either option "min" or "max" must be given.');
@@ -60,10 +39,6 @@ class Length extends AbstractRule
         if ($max !== null && $max < $min) {
             throw new LogicException('"Max" option cannot be less that "min".');
         }
-
-        $this->min = $min;
-        $this->max = $max;
-        $this->charset = $charset;
     }
 
     /**
@@ -73,7 +48,7 @@ class Length extends AbstractRule
      *
      * @return bool
      */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null || $input === '') {
             return false;

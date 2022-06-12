@@ -8,23 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 class LengthTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testThrowsWhenMinAndMaxAreNull()
+    public function testThrowsWhenMinAndMaxAreNull(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         new Length;
     }
 
-    /**
-     * @expectedException \LogicException
-     */
-    public function testThrowsWhenMaxIsLessThanMin()
+    public function testThrowsWhenMaxIsLessThanMin(): void
     {
+        $this->expectException(\LogicException::class);
+
         new Length(5, 0);
     }
 
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertFalse((new Length(5, 15))->isValid(''));
         static::assertFalse((new Length(5, 15))->isValid('test'));

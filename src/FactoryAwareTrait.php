@@ -15,14 +15,14 @@ trait FactoryAwareTrait
      *
      * @var FactoryInterface
      */
-    protected $validationFactory;
+    protected FactoryInterface $validationFactory;
 
     /**
      * Returns validation factory instance.
      *
      * @return FactoryInterface
      */
-    public function getValidationFactory()
+    public function getValidationFactory(): FactoryInterface
     {
         return $this->validationFactory;
     }
@@ -34,7 +34,7 @@ trait FactoryAwareTrait
      *
      * @return $this
      */
-    public function setValidationFactory(FactoryInterface $factory)
+    public function setValidationFactory(FactoryInterface $factory): static
     {
         $this->validationFactory = $factory;
 
@@ -50,7 +50,7 @@ trait FactoryAwareTrait
      *
      * @return ValidatorInterface
      */
-    public function makeValidator(array $data, array $rules, array $messages = [])
+    public function makeValidator(array $data, array $rules, array $messages = []): ValidatorInterface
     {
         return $this->validationFactory->make($data, $rules, $messages);
     }

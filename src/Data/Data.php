@@ -8,44 +8,34 @@ namespace Kontrolio\Data;
  */
 final class Data
 {
-    private $data;
-
-    public function __construct(array $data)
+    public function __construct(public readonly array $raw)
     {
-        $this->data = $data;
-    }
-
-    public function raw()
-    {
-        return $this->data;
     }
 
     /**
      * Returns an object representation of the given attribute.
      *
-     * @param string $attribute
+     * @param string|null $attribute
      *
      * @return Attribute
      */
-    public function get($attribute)
+    public function get(?string $attribute): Attribute
     {
-        if ($attribute === null) {
-            return new Attribute($attribute);
-        }
+        $attribute ??= '';
 
-        if (isset($this->data[$attribute])) {
-            return new Attribute($attribute, $this->data[$attribute]);
+        if (isset($this->raw[$attribute])) {
+            return new Attribute($attribute, $this->raw[$attribute]);
         }
 
         $segments = explode('.', $attribute);
         $data = null;
 
         foreach ($segments as $segment) {
-            if (!array_key_exists($segment, $this->data)) {
+            if (!array_key_exists($segment, $this->raw)) {
                 return new Attribute($attribute);
             }
 
-            $data = $this->data[$segment];
+            $data = $this->raw[$segment];
         }
 
         return new Attribute($attribute, $data);

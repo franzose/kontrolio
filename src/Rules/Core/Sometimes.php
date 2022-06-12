@@ -12,14 +12,7 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Sometimes extends AbstractRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return true;
     }
@@ -29,7 +22,7 @@ class Sometimes extends AbstractRule
      *
      * @return bool
      */
-    public function emptyValueAllowed()
+    public function emptyValueAllowed(): bool
     {
         return true;
     }

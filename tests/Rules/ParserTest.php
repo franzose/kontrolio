@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ParserTest extends TestCase
 {
-    public function testParse()
+    public function testParse(): void
     {
         $parser = new Parser(new Repository(new Instantiator(), [
             EqualTo::class,

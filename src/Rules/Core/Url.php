@@ -17,7 +17,7 @@ class Url extends AbstractRule
      *
      * @see https://github.com/symfony/symfony/blob/master/src/Symfony/Component/Validator/Constraints/UrlValidator.php
      */
-    const PATTERN = '~^
+    public const PATTERN = '~^
             (%s)://                                 # protocol
             (([\pL\pN\-]+:)?([\pL\pN\-]+)@)?          # basic auth
             (
@@ -33,44 +33,24 @@ class Url extends AbstractRule
             (/?|/\S+|\?\S*|\#\S*)                   # a /, nothing, a / with something, a query or a fragment
         $~ixu';
 
-    /**
-     * Checked protocols.
-     *
-     * @var array
-     */
-    private $protocols = ['http', 'https'];
-
-    /**
-     * Indicates whether DNS will be checked.
-     *
-     * @var bool
-     */
-    private $checkDNS;
+    public const PROTOCOLS = ['http', 'https'];
 
     /**
      * Url constructor.
      *
-     * @param bool $checkDNS
+     * @param bool $checkDNS Indicates whether DNS will be checked
      */
-    public function __construct($checkDNS = false)
+    public function __construct(private readonly bool $checkDNS = false)
     {
-        $this->checkDNS = $checkDNS;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null || $input === '') {
             return false;
         }
 
-        $pattern = sprintf(static::PATTERN, implode('|', $this->protocols));
+        $pattern = sprintf(static::PATTERN, implode('|', self::PROTOCOLS));
 
         if (!preg_match($pattern, $input)) {
             $this->violations[] = 'url';

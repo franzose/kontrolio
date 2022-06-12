@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class IdenticalToTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertTrue((new IdenticalTo(5))->isValid(5));
         static::assertFalse((new IdenticalTo(5))->isValid('5'));

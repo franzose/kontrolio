@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 final class RepositoryTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $rules = [
             EqualTo::class,
@@ -26,7 +26,7 @@ final class RepositoryTest extends TestCase
         static::assertEquals($expected, $rules->all());
     }
 
-    public function testMake()
+    public function testMake(): void
     {
         $rules = new Repository(new Instantiator(), [
             EqualTo::class
@@ -38,7 +38,7 @@ final class RepositoryTest extends TestCase
         static::assertTrue($rule->isValid('foo'));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $rules = new Repository(new Instantiator(), [
             EqualTo::class
@@ -47,7 +47,7 @@ final class RepositoryTest extends TestCase
         static::assertTrue($rules->has('equal_to'));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $rules = new Repository(new Instantiator(), [
             EqualTo::class
@@ -56,7 +56,7 @@ final class RepositoryTest extends TestCase
         static::assertEquals(EqualTo::class, $rules->get('equal_to'));
     }
 
-    public function testGetThrowsIfThereIsNoSuchRule()
+    public function testGetThrowsIfThereIsNoSuchRule(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Rule identified by `foo` could not be loaded.');
@@ -68,7 +68,7 @@ final class RepositoryTest extends TestCase
         $rules->get('foo');
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $rules = [
             EqualTo::class,

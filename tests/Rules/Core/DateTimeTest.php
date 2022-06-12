@@ -8,12 +8,12 @@ use PHPUnit\Framework\TestCase;
 
 class DateTimeTest extends TestCase
 {
-    public function testBasicValidation()
+    public function testBasicValidation(): void
     {
         static::assertTrue((new DateTime)->isValid('2016-06-06 23:59:59'));
     }
 
-    public function testGeneralFormatViolation()
+    public function testGeneralFormatViolation(): void
     {
         $rule = new DateTime;
 
@@ -21,7 +21,7 @@ class DateTimeTest extends TestCase
         static::assertEquals(['format'], $rule->getViolations());
     }
 
-    public function testWarningViolations()
+    public function testWarningViolations(): void
     {
         $one = new DateTime;
         $two = new DateTime;

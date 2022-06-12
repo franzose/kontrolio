@@ -7,7 +7,7 @@ use Kontrolio\Rules\AbstractRule;
 
 class IsNotEmpty extends AbstractRule
 {
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return $input !== null && $input !== '';
     }

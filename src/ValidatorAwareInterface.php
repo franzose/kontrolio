@@ -17,12 +17,12 @@ interface ValidatorAwareInterface
      *
      * @return $this
      */
-    public function setValidator(ValidatorInterface $validator);
+    public function setValidator(ValidatorInterface $validator): static;
 
     /**
      * Performs validation.
      *
      * @return bool
      */
-    public function validate();
+    public function validate(): bool;
 }

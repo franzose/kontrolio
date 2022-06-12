@@ -15,7 +15,7 @@ trait ValidatorAwareTrait
      *
      * @var ValidatorInterface
      */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
     /**
      * Sets validator.
@@ -24,7 +24,7 @@ trait ValidatorAwareTrait
      *
      * @return $this
      */
-    public function setValidator(ValidatorInterface $validator)
+    public function setValidator(ValidatorInterface $validator): static
     {
         $this->validator = $validator;
 
@@ -36,7 +36,7 @@ trait ValidatorAwareTrait
      *
      * @return bool
      */
-    public function validate()
+    public function validate(): bool
     {
         return $this->validator->validate();
     }

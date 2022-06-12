@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class IpTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertFalse((new Ip)->isValid('foo'));
         static::assertTrue((new Ip)->isValid('192.168.1.1'));

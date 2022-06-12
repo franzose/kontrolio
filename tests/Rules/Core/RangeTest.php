@@ -9,23 +9,21 @@ use PHPUnit\Framework\TestCase;
 
 class RangeTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testThrowsWhenMinAndMaxAreNull()
+    public function testThrowsWhenMinAndMaxAreNull(): void
     {
-        new Range;
+        $this->expectException(\InvalidArgumentException::class);
+
+        new Range();
     }
 
-    /**
-     * @expectedException \LogicException
-     */
-    public function testThrowsWhenMaxIsLessThanMin()
+    public function testThrowsWhenMaxIsLessThanMin(): void
     {
+        $this->expectException(\LogicException::class);
+
         new Range(5, 0);
     }
 
-    public function testNumericViolation()
+    public function testNumericViolation(): void
     {
         $rule = new Range(5, 15);
 
@@ -33,7 +31,7 @@ class RangeTest extends TestCase
         static::assertEquals(['numeric'], $rule->getViolations());
     }
 
-    public function testValidation()
+    public function testValidation(): void
     {
         static::assertFalse((new Range(5, 15))->isValid(''));
         static::assertFalse((new Range(5, 15))->isValid(3));

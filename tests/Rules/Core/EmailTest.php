@@ -8,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase
 {
-    public function testBasicValidation()
+    public function testBasicValidation(): void
     {
         static::assertFalse((new Email)->isValid(''));
         static::assertTrue((new Email)->isValid('test@gmail.com'));
     }
 
-    public function testMxAndHostValidation()
+    public function testMxAndHostValidation(): void
     {
         $rule = new Email(true, true);
         $valid = $rule->isValid('blah@askdjlaksd.%^&');
@@ -22,6 +22,6 @@ class EmailTest extends TestCase
 
         static::assertFalse($valid);
         static::assertCount(2, $violations);
-        static::assertArraySubset(['mx', 'host'], $violations);
+        static::assertEquals(['mx', 'host'], $violations);
     }
 }

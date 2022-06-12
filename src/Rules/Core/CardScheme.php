@@ -17,7 +17,7 @@ class CardScheme extends AbstractRule
      *
      * @var array
      */
-    protected static $schemes = [
+    protected const SCHEMES = [
         // American Express card numbers start with 34 or 37 and have 15 digits.
         'AMEX' => ['/^3[47][0-9]{13}$/'],
 
@@ -65,14 +65,7 @@ class CardScheme extends AbstractRule
         'VISA' => ['/^4([0-9]{12}|[0-9]{15})$/'],
     ];
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null || $input === '') {
             return false;
@@ -84,7 +77,7 @@ class CardScheme extends AbstractRule
             return false;
         }
 
-        foreach (static::$schemes as $scheme => $regexes) {
+        foreach (static::SCHEMES as $scheme => $regexes) {
             foreach ($regexes as $regex) {
                 if (preg_match($regex, $input)) {
                     return true;

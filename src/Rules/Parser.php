@@ -5,12 +5,10 @@ namespace Kontrolio\Rules;
 
 final class Parser
 {
-    private $cache;
-    private $rules;
+    private array $cache = [];
 
-    public function __construct(Repository $rules)
+    public function __construct(private readonly Repository $rules)
     {
-        $this->rules = $rules;
     }
 
     /**
@@ -19,8 +17,9 @@ final class Parser
      * @param string $string validation string like "equal_to:foo|not_equal_to:bar"
      *
      * @return RuleInterface[]
+     * @throws \ReflectionException
      */
-    public function parse($string)
+    public function parse(string $string): array
     {
         if (isset($this->cache[$string])) {
             return $this->cache[$string];
@@ -40,7 +39,7 @@ final class Parser
      *
      * @return array
      */
-    private function getNameAndArguments($rule)
+    private function getNameAndArguments(string $rule): array
     {
         $delimpos = strpos($rule, ':');
 
@@ -50,7 +49,7 @@ final class Parser
 
         return [
             substr($rule, 0, $delimpos),
-            (array) explode(',', substr($rule, $delimpos + 1))
+            explode(',', substr($rule, $delimpos + 1))
         ];
     }
 }

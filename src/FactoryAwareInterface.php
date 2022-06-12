@@ -15,7 +15,7 @@ interface FactoryAwareInterface
      *
      * @return FactoryInterface
      */
-    public function getValidationFactory();
+    public function getValidationFactory(): FactoryInterface;
 
     /**
      * Sets validation factory instance.
@@ -24,7 +24,7 @@ interface FactoryAwareInterface
      *
      * @return $this
      */
-    public function setValidationFactory(FactoryInterface $factory);
+    public function setValidationFactory(FactoryInterface $factory): static;
 
     /**
      * Builds validator using validation factory.
@@ -35,5 +35,5 @@ interface FactoryAwareInterface
      *
      * @return ValidatorInterface
      */
-    public function makeValidator(array $data, array $rules, array $messages = []);
+    public function makeValidator(array $data, array $rules, array $messages = []): ValidatorInterface;
 }

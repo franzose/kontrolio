@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class CommonRuleTest extends TestCase
 {
-    public function testGetNameReturnsSnakeCase()
+    public function testGetNameReturnsSnakeCase(): void
     {
         $rule = new DummyRule;
 
         static::assertEquals('dummy', $rule->getName());
     }
     
-    public function testAllowingEmptyConstructor()
+    public function testAllowingEmptyConstructor(): void
     {
         static::assertTrue(DummyRule::allowingEmptyValue()->emptyValueAllowed());
     }

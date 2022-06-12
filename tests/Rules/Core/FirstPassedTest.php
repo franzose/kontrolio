@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class FirstPassedTest extends TestCase
 {
-    public function testValidation()
+    public function testValidation(): void
     {
         $rule = new FirstPassed(
             new Length(5, 10),

@@ -7,14 +7,7 @@ use Kontrolio\Rules\AbstractRule;
 
 class Snils extends AbstractRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if (!is_numeric($input)) {
             $this->violations[] = 'numeric';
@@ -24,7 +17,7 @@ class Snils extends AbstractRule
 
         $input = (string) $input;
 
-        if (strlen($input) != 11) {
+        if (strlen($input) !== 11) {
             $this->violations[] = 'length';
 
             return false;
@@ -35,7 +28,7 @@ class Snils extends AbstractRule
         $checksum = 0;
 
         while ($index <= 8) {
-            $checksum = $checksum + intval($input[$index]) + $factor[$index];
+            $checksum += (int)$input[$index] + $factor[$index];
             $index++;
         }
 

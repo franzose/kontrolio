@@ -7,12 +7,12 @@ use Kontrolio\Rules\AbstractRule;
 
 class FooBarRule extends AbstractRule
 {
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return $input === 'bar';
     }
     
-    public function getMessage()
+    public function getMessage(): string
     {
         return '';
     }

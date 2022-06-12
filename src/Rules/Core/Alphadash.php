@@ -12,14 +12,7 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Alphadash extends AbstractRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return (bool) preg_match('/^([-a-z0-9_-])+$/i', $input);
     }

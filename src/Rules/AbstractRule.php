@@ -15,24 +15,23 @@ abstract class AbstractRule implements RuleInterface
      *
      * @var bool
      */
-    protected $emptyAllowed = false;
+    protected bool $emptyAllowed = false;
 
     /**
      * Validation violations.
      *
      * @var array
      */
-    protected $violations = [];
+    protected array $violations = [];
 
     /**
      * Constructs a rule allowing empty input by default.
      *
-     *
      * @return $this
      */
-    public static function allowingEmptyValue()
+    public static function allowingEmptyValue(): static
     {
-        return (new static)->allowEmptyValue();
+        return (new static())->allowEmptyValue();
     }
 
     /**
@@ -40,7 +39,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         $class = get_class($this);
         $segments = explode('\\', $class);
@@ -65,7 +64,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return bool
      */
-    public function emptyValueAllowed()
+    public function emptyValueAllowed(): bool
     {
         return $this->emptyAllowed;
     }
@@ -75,7 +74,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return $this
      */
-    public function allowEmptyValue()
+    public function allowEmptyValue(): static
     {
         $this->emptyAllowed = true;
         
@@ -89,7 +88,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return bool
      */
-    public function canSkipValidation($input = null)
+    public function canSkipValidation(mixed $input = null): bool
     {
         return false;
     }
@@ -99,7 +98,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return bool
      */
-    public function hasViolations()
+    public function hasViolations(): bool
     {
         return count($this->violations) > 0;
     }
@@ -109,7 +108,7 @@ abstract class AbstractRule implements RuleInterface
      *
      * @return array
      */
-    public function getViolations()
+    public function getViolations(): array
     {
         return $this->violations;
     }

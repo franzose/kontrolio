@@ -12,10 +12,10 @@ final class DataTest extends TestCase
     /**
      * @dataProvider getTestsDataProvider
      * @param array $data
-     * @param string $name
+     * @param string|null $name
      * @param Attribute $expectedAttribute
      */
-    public function testGet(array $data, $name, Attribute $expectedAttribute)
+    public function testGet(array $data, ?string $name, Attribute $expectedAttribute): void
     {
         $data = new Data($data);
 
@@ -24,7 +24,7 @@ final class DataTest extends TestCase
         static::assertEquals($expectedAttribute, $attribute);
     }
 
-    public function getTestsDataProvider()
+    public function getTestsDataProvider(): array
     {
         return [
             [['foo' => 'bar'], null, new Attribute(null)],

@@ -16,26 +16,14 @@ class EachPassed extends AbstractRule
     /**
      * @var RuleInterface[]
      */
-    private $rules;
+    private array $rules;
 
-    /**
-     * Validation rule constructor
-     *
-     * @param RuleInterface[] ...$rules
-     */
     public function __construct(RuleInterface ...$rules)
     {
         $this->rules = $rules;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return count($this->getPassedRules($input)) === count($this->rules);
     }
@@ -45,12 +33,10 @@ class EachPassed extends AbstractRule
      *
      * @param mixed $input
      *
-     * @return array|RuleInterface[]
+     * @return RuleInterface[]
      */
-    private function getPassedRules($input)
+    private function getPassedRules(mixed $input): array
     {
-        return array_filter($this->rules, function (RuleInterface $rule) use ($input) {
-            return $rule->isValid($input) === true;
-        });
+        return array_filter($this->rules, static fn (RuleInterface $rule) => $rule->isValid($input));
     }
 }

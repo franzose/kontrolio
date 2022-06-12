@@ -7,11 +7,8 @@ use UnexpectedValueException;
 
 final class ArrayNormalizer
 {
-    private $parser;
-
-    public function __construct(Parser $parser)
+    public function __construct(private readonly Parser $parser)
     {
-        $this->parser = $parser;
     }
 
     /**
@@ -49,7 +46,7 @@ final class ArrayNormalizer
      * @return RuleInterface[][]|callable[][]
      * @throws UnexpectedValueException
      */
-    public function normalize(array $raw)
+    public function normalize(array $raw): array
     {
         $attributes = array_keys($raw);
 
@@ -68,11 +65,11 @@ final class ArrayNormalizer
      * @return RuleInterface[]
      * @throws UnexpectedValueException
      */
-    private function resolveRules($rules)
+    private function resolveRules(array|RuleInterface|callable|string $rules): array
     {
         if (is_array($rules)) {
             foreach ($rules as $rule) {
-                static::ensureType($rule);
+                self::ensureType($rule);
             }
 
             return $rules;
@@ -82,7 +79,7 @@ final class ArrayNormalizer
             return $this->parser->parse($rules);
         }
 
-        static::ensureType($rules);
+        self::ensureType($rules);
 
         return [$rules];
     }
@@ -93,7 +90,7 @@ final class ArrayNormalizer
      * @param mixed $rule
      * @throws UnexpectedValueException
      */
-    private static function ensureType($rule)
+    private static function ensureType(mixed $rule): void
     {
         if (!$rule instanceof RuleInterface && !is_callable($rule)) {
             throw new UnexpectedValueException(

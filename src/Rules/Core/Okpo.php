@@ -7,14 +7,7 @@ use Kontrolio\Rules\AbstractRule;
 
 class Okpo extends AbstractRule
 {
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if (!is_numeric($input)) {
             $this->violations[] = 'numeric';
@@ -24,7 +17,7 @@ class Okpo extends AbstractRule
 
         $input = (string) $input;
 
-        if (strlen($input) != 8) {
+        if (strlen($input) !== 8) {
             $this->violations[] = 'length';
 
             return false;
@@ -37,7 +30,7 @@ class Okpo extends AbstractRule
         $index = 0;
 
         while ($index <= 6) {
-            $checksum1 = $checksum1 + intval($input[$index]) * $factor1[$index];
+            $checksum1 = $checksum1 + (int)$input[$index] * $factor1[$index];
             $index++;
         }
 
@@ -47,7 +40,7 @@ class Okpo extends AbstractRule
         $checksum2 = 0;
 
         while ($index <= 6) {
-            $checksum2 = $checksum2 + intval($input[$index]) * $factor2[$index];
+            $checksum2 = $checksum2 + (int)$input[$index] * $factor2[$index];
             $index++;
         }
 

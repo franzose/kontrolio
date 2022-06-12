@@ -24,36 +24,30 @@ class CallableRuleWrapper extends AbstractRule
      *
      * @var mixed
      */
-    private $value;
+    private mixed $value;
 
     /**
      * Validation rule identifier.
      *
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * Valid/invalid state.
      *
      * @var bool
      */
-    private $valid = false;
+    private bool $valid = false;
 
     /**
      * Skipping state.
      *
      * @var bool
      */
-    private $skip = false;
+    private bool $skip = false;
 
-    /**
-     * Validation rule constructor.
-     *
-     * @param callable|array $rule
-     * @param mixed $value
-     */
-    public function __construct($rule, $value = null)
+    public function __construct(callable|array $rule, mixed $value = null)
     {
         is_array($rule)
             ? $this->setDefaultsFromArray($rule)
@@ -66,7 +60,7 @@ class CallableRuleWrapper extends AbstractRule
      * @param callable $rule
      * @param mixed $value
      */
-    private function setDefaults(callable $rule, $value)
+    private function setDefaults(callable $rule, mixed $value): void
     {
         $this->rule = $rule;
         $this->value = $value;
@@ -80,7 +74,7 @@ class CallableRuleWrapper extends AbstractRule
      * @param array $attributes
      * @throws UnexpectedValueException
      */
-    private function setDefaultsFromArray(array $attributes)
+    private function setDefaultsFromArray(array $attributes): void
     {
         if (!isset($attributes['valid'])) {
             throw new UnexpectedValueException('Validation check missing.');
@@ -91,12 +85,10 @@ class CallableRuleWrapper extends AbstractRule
         }
 
         $this->valid = (bool) $attributes['valid'];
-        $this->emptyAllowed = isset($attributes['empty_allowed'])
-            ? (bool) $attributes['empty_allowed']
-            : false;
+        $this->emptyAllowed = isset($attributes['empty_allowed']) && (bool)$attributes['empty_allowed'];
 
-        $this->skip = isset($attributes['skip']) ? (bool) $attributes['skip'] : false;
-        $this->violations = isset($attributes['violations']) ? $attributes['violations'] : [];
+        $this->skip = isset($attributes['skip']) && (bool)$attributes['skip'];
+        $this->violations = $attributes['violations'] ?? [];
     }
 
     /**
@@ -104,23 +96,12 @@ class CallableRuleWrapper extends AbstractRule
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        if (isset($this->name)) {
-            return $this->name;
-        }
-
-        return uniqid(parent::getName() . '_', true);
+        return $this->name ?? uniqid(parent::getName() . '_', true);
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         $rule = $this->rule;
 
@@ -134,7 +115,7 @@ class CallableRuleWrapper extends AbstractRule
      *
      * @return bool
      */
-    public function canSkipValidation($input = null)
+    public function canSkipValidation(mixed $input = null): bool
     {
         return $this->skip;
     }

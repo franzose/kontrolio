@@ -7,16 +7,13 @@ use Kontrolio\Rules\AbstractRule;
 
 final class BetweenInclusive extends AbstractRule
 {
-    private $min;
-    private $max;
-
-    public function __construct($min, $max)
-    {
-        $this->min = $min;
-        $this->max = $max;
+    public function __construct(
+        private readonly mixed $min,
+        private readonly mixed $max
+    ) {
     }
 
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         return (new GreaterThanOrEqual($this->min))->isValid($input) &&
                (new LessThanOrEqual($this->max))->isValid($input);

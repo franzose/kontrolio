@@ -8,15 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegexTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testShouldOnlyAcceptPatternAsString()
-    {
-        new Regex(234);
-    }
-
-    public function testMatching()
+    public function testMatching(): void
     {
         $rule = new Regex('/[a-z]{2}/');
 

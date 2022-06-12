@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Kontrolio\Rules\Core;
 
-use InvalidArgumentException;
 use Kontrolio\Rules\AbstractRule;
 
 /**
@@ -13,31 +12,14 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Regex extends AbstractRule
 {
-    /**
-     * @var string
-     */
-    private $pattern;
+    private string $pattern;
 
-    /**
-     * @param string $pattern
-     */
-    public function __construct($pattern)
+    public function __construct(string $pattern)
     {
-        if (!is_string($pattern)) {
-            throw new InvalidArgumentException('Pattern must be a string.');
-        }
-
         $this->pattern = $pattern;
     }
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if (empty($input)) {
             return false;

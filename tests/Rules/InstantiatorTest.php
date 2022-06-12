@@ -21,7 +21,7 @@ final class InstantiatorTest extends TestCase
      *
      * @throws ReflectionException
      */
-    public function testThrowsIfClassIsNotInstantiable($class, $message)
+    public function testThrowsIfClassIsNotInstantiable(string $class, string $message): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage($message);
@@ -29,7 +29,7 @@ final class InstantiatorTest extends TestCase
         (new Instantiator())->make($class);
     }
 
-    public function exceptionDataProvider()
+    public function exceptionDataProvider(): array
     {
         return [
             [AbstractRule::class, 'Rule class must be instantiable.'],
@@ -37,7 +37,7 @@ final class InstantiatorTest extends TestCase
         ];
     }
 
-    public function testInstantiatesTheRule()
+    public function testInstantiatesTheRule(): void
     {
         $rule = (new Instantiator())->makeWithArgs(EqualTo::class, ['foo']);
 

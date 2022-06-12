@@ -11,27 +11,10 @@ use Kontrolio\Rules\RuleInterface;
  */
 final class Attribute
 {
-    private $value;
-    private $attribute;
-
-    /**
-     * @param string $attribute
-     * @param mixed $value
-     */
-    public function __construct($attribute, $value = null)
-    {
-        $this->attribute = $attribute;
-        $this->value = $value;
-    }
-
-    public function getName()
-    {
-        return $this->attribute;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
+    public function __construct(
+        public readonly ?string $name,
+        public readonly mixed $value = null
+    ) {
     }
 
     /**
@@ -41,7 +24,7 @@ final class Attribute
      *
      * @return bool
      */
-    public function canSkip(RuleInterface $rule)
+    public function canSkip(RuleInterface $rule): bool
     {
         return $rule instanceof Sometimes && $this->isEmpty();
     }
@@ -53,14 +36,14 @@ final class Attribute
      *
      * @return bool
      */
-    public function conformsTo(RuleInterface $rule)
+    public function conformsTo(RuleInterface $rule): bool
     {
         return $rule->isValid($this->value) ||
                $rule->canSkipValidation($this->value) ||
                ($rule->emptyValueAllowed() && $this->isEmpty());
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->value === null || $this->value === '';
     }

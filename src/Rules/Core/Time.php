@@ -13,16 +13,9 @@ use Kontrolio\Rules\AbstractRule;
  */
 class Time extends AbstractRule
 {
-    const PATTERN = '/^(\d{2}):(\d{2}):(\d{2})$/';
+    public const PATTERN = '/^(\d{2}):(\d{2}):(\d{2})$/';
 
-    /**
-     * Validates input.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function isValid($input = null)
+    public function isValid(mixed $input = null): bool
     {
         if ($input === null || $input === '' || $input instanceof PhpDateTime) {
             return false;
@@ -36,7 +29,7 @@ class Time extends AbstractRule
             return false;
         }
 
-        if (!self::checkTime($matches[1], $matches[2], $matches[3])) {
+        if (!self::checkTime((int)$matches[1], (int)$matches[2], (int)$matches[3])) {
             $this->violations[] = 'time';
 
             return false;
@@ -54,7 +47,7 @@ class Time extends AbstractRule
      *
      * @return bool
      */
-    protected static function checkTime($hour, $minute, $second)
+    protected static function checkTime(int $hour, int $minute, int $second): bool
     {
         return $hour >= 0 && $hour < 24 && $minute >= 0 && $minute < 60 && $second >= 0 && $second < 60;
     }

@@ -16,12 +16,12 @@ class IsInTest extends TestCase
 
     /**
      * @param array $haystack
-     * @param $input
-     * @param $expectedResult
      * @param bool $strict
+     * @param string $input
+     * @param bool $expectedResult
      * @dataProvider dpValidation
      */
-    public function testValidation(array $haystack, $strict, $input, $expectedResult)
+    public function testValidation(array $haystack, bool $strict, string $input, bool $expectedResult): void
     {
         $rule = new IsIn($haystack, $strict);
 
@@ -31,10 +31,7 @@ class IsInTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function dpValidation()
+    public function dpValidation(): array
     {
         return [
             [
