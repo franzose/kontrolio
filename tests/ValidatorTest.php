@@ -50,11 +50,9 @@ class ValidatorTest extends TestCase
         static::assertEquals($messages, $validator->getMessages());
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testThrowsOnUnknownRule()
     {
+        $this->expectException(\UnexpectedValueException::class);
         $this->validate(['foo' => 'bar'], ['foo' => 'uknown_rule'], ['foo' => 'error!']);
     }
 

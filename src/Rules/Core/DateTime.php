@@ -33,6 +33,10 @@ class DateTime extends AbstractRule
         PhpDateTime::createFromFormat(static::FORMAT, $input);
         $errors = PhpDateTime::getLastErrors();
 
+        if ($errors === false) {
+            return true;
+        }
+
         if ($errors['error_count'] > 0) {
             $this->violations[] = 'format';
 
