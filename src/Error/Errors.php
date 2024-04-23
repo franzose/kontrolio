@@ -54,6 +54,7 @@ final class Errors implements Countable
         return array_key_exists($attribute, $this->errors);
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->errors);

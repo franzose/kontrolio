@@ -7,11 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class RegexTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testShouldOnlyAcceptPatternAsString()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Regex(234);
     }
 

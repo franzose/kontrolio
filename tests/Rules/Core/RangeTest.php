@@ -8,19 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class RangeTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testThrowsWhenMinAndMaxAreNull()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Range;
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testThrowsWhenMaxIsLessThanMin()
     {
+        $this->expectException(\LogicException::class);
         new Range(5, 0);
     }
 

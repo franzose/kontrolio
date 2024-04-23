@@ -21,6 +21,6 @@ class EmailTest extends TestCase
 
         static::assertFalse($valid);
         static::assertCount(2, $violations);
-        static::assertArraySubset(['mx', 'host'], $violations);
+        static::assertEquals(['mx', 'host'], $violations);
     }
 }

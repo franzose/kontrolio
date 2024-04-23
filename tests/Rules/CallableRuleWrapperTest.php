@@ -7,11 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class CallableRuleWrapperTest extends TestCase
 {
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testConstructorThrowsOnValidationAbsence()
     {
+        $this->expectException(\UnexpectedValueException::class);
         new CallableRuleWrapper(['name' => 'foo']);
     }
     

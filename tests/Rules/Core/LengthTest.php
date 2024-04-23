@@ -7,19 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 class LengthTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testThrowsWhenMinAndMaxAreNull()
     {
+        $this->expectException(\InvalidArgumentException::class);
         new Length;
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testThrowsWhenMaxIsLessThanMin()
     {
+        $this->expectException(\LogicException::class);
         new Length(5, 0);
     }
 
