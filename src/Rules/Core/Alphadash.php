@@ -20,6 +20,6 @@ class Alphadash extends AbstractRule
      */
     public function isValid($input = null)
     {
-        return (bool) preg_match('/^([-a-z0-9_-])+$/i', $input);
+        return (bool) preg_match('/^[a-z0-9_-]+$/i', $input);
     }
 }
