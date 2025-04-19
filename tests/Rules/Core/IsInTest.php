@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Kontrolio\Tests\Rules\Core;
 
 use Kontrolio\Rules\Core\IsIn;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,6 +22,7 @@ class IsInTest extends TestCase
      * @param bool $expectedResult
      * @dataProvider dpValidation
      */
+    #[DataProvider('dpValidation')]
     public function testValidation(array $haystack, bool $strict, string $input, bool $expectedResult): void
     {
         $rule = new IsIn($haystack, $strict);
@@ -31,7 +33,7 @@ class IsInTest extends TestCase
         );
     }
 
-    public function dpValidation(): array
+    public static function dpValidation(): array
     {
         return [
             [
