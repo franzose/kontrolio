@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace Kontrolio\Tests\Rules\Core;
 
-use Kontrolio\Rules\Core\IsFalse;
+use Kontrolio\Rules\Core\IsTrue;
 use PHPUnit\Framework\TestCase;
 
-class IsFalseTest extends TestCase
+class IsTrueTest extends TestCase
 {
     public function testValidation(): void
     {
-        $rule = new IsFalse;
+        $rule = new IsTrue;
 
         static::assertFalse($rule->isValid('foo'));
         static::assertFalse($rule->isValid(''));
         static::assertFalse($rule->isValid());
-        static::assertTrue($rule->isValid(false));
+        static::assertTrue($rule->isValid(true));
     }
 }
