@@ -2,8 +2,7 @@ name: 'Continuous Integration'
 
 on:
   pull_request: ~
-  push:
-    branches: [ 2.x ]
+  push: ~
 
 jobs:
   unit-tests:

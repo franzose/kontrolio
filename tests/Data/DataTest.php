@@ -5,6 +5,7 @@ namespace Kontrolio\Tests\Data;
 
 use Kontrolio\Data\Attribute;
 use Kontrolio\Data\Data;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DataTest extends TestCase
@@ -15,6 +16,7 @@ final class DataTest extends TestCase
      * @param string|null $name
      * @param Attribute $expectedAttribute
      */
+    #[DataProvider('getTestsDataProvider')]
     public function testGet(array $data, ?string $name, Attribute $expectedAttribute): void
     {
         $data = new Data($data);
@@ -24,7 +26,7 @@ final class DataTest extends TestCase
         static::assertEquals($expectedAttribute, $attribute);
     }
 
-    public function getTestsDataProvider(): array
+    public static function getTestsDataProvider(): array
     {
         return [
             [['foo' => 'bar'], null, new Attribute(null)],

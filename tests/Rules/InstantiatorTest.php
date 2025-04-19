@@ -8,6 +8,7 @@ use Kontrolio\Rules\Core\EqualTo;
 use Kontrolio\Rules\Instantiator;
 use Kontrolio\Rules\RuleInterface;
 use Kontrolio\Validator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use UnexpectedValueException;
@@ -21,6 +22,7 @@ final class InstantiatorTest extends TestCase
      *
      * @throws ReflectionException
      */
+    #[DataProvider('exceptionDataProvider')]
     public function testThrowsIfClassIsNotInstantiable(string $class, string $message): void
     {
         $this->expectException(UnexpectedValueException::class);
@@ -29,7 +31,7 @@ final class InstantiatorTest extends TestCase
         (new Instantiator())->make($class);
     }
 
-    public function exceptionDataProvider(): array
+    public static function exceptionDataProvider(): array
     {
         return [
             [AbstractRule::class, 'Rule class must be instantiable.'],
